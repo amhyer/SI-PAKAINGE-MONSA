@@ -1,0 +1,13 @@
+{
+  "appId": "id.makassar.monsalapor",
+  "appName": "SI-PAKAINGE MONSA",
+  "webDir": "../web_bundle",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

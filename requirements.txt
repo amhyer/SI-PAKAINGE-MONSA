@@ -1,0 +1,7 @@
+# Ketergantungan Python SI-PAKAINGE MONSA
+#
+# RUNTIME: TIDAK ADA. Backend berjalan penuh dengan Python stdlib
+# (http.server + sqlite3 + smtplib + hmac) — lihat server/app.py.
+#
+# Hanya untuk pengembangan/test:
+pytest>=8.0

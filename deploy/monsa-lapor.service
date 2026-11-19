@@ -1,0 +1,22 @@
+[Unit]
+Description=SI-PAKAINGE MONSA - Layanan Pengaduan & Aspirasi Sekolah (UPTD SPF SDN Unggulan Mongisidi 1)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/sikola-makassar
+EnvironmentFile=/opt/sikola-makassar/.env
+ExecStart=/usr/bin/python3 /opt/sikola-makassar/server/app.py
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+
+# Pengamanan dasar layanan systemd
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

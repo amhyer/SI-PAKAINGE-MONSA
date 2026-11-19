@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', 'Roboto', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Mode Inklusif Lansia & Low-Vision (Huruf Lebih Besar & Kontras Tajam) */
+.monsa-a11y-large {
+  font-size: 112%;
+}
+.monsa-a11y-large .text-\[10px\] {
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+.monsa-a11y-large .text-\[11px\] {
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+}
+.monsa-a11y-large .text-xs {
+  font-size: 14.5px !important;
+  line-height: 1.5 !important;
+}
+.monsa-a11y-large .text-sm {
+  font-size: 16px !important;
+}
+.monsa-a11y-large button,
+.monsa-a11y-large input,
+.monsa-a11y-large select,
+.monsa-a11y-large textarea {
+  min-height: 40px;
+}
+
+/* Mode Kontras Tinggi (Ramah Low-Vision & Penggunaan Luar Ruangan) */
+.monsa-high-contrast {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+.monsa-high-contrast header,
+.monsa-high-contrast nav {
+  background-color: #000000 !important;
+  border-color: #facc15 !important;
+}
+.monsa-high-contrast .bg-white,
+.monsa-high-contrast .bg-slate-50,
+.monsa-high-contrast .bg-slate-100,
+.monsa-high-contrast .bg-cyan-50,
+.monsa-high-contrast .bg-cyan-50\/70,
+.monsa-high-contrast .bg-emerald-50,
+.monsa-high-contrast .bg-emerald-50\/70,
+.monsa-high-contrast .bg-amber-50,
+.monsa-high-contrast .bg-rose-50 {
+  background-color: #0a0a0a !important;
+  color: #ffffff !important;
+  border-color: #facc15 !important;
+}
+.monsa-high-contrast .text-slate-900,
+.monsa-high-contrast .text-slate-800,
+.monsa-high-contrast .text-slate-700,
+.monsa-high-contrast .text-slate-600,
+.monsa-high-contrast .text-slate-500,
+.monsa-high-contrast .text-slate-400,
+.monsa-high-contrast .text-\[\#0B2D52\],
+.monsa-high-contrast .text-cyan-800,
+.monsa-high-contrast .text-cyan-900,
+.monsa-high-contrast .text-cyan-950,
+.monsa-high-contrast .text-emerald-800,
+.monsa-high-contrast .text-emerald-900,
+.monsa-high-contrast .text-emerald-950,
+.monsa-high-contrast .text-amber-900,
+.monsa-high-contrast .text-amber-950 {
+  color: #fde047 !important;
+}
+.monsa-high-contrast input,
+.monsa-high-contrast select,
+.monsa-high-contrast textarea {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+  border-color: #facc15 !important;
+}
+.monsa-high-contrast button {
+  border-color: #facc15 !important;
+}
+.monsa-high-contrast .bg-amber-400,
+.monsa-high-contrast .bg-emerald-400,
+.monsa-high-contrast .bg-yellow-400 {
+  color: #000000 !important;
+}
+.monsa-high-contrast .bg-amber-400 *,
+.monsa-high-contrast .bg-emerald-400 *,
+.monsa-high-contrast .bg-yellow-400 * {
+  color: #000000 !important;
+}
+.monsa-high-contrast .bg-rose-600,
+.monsa-high-contrast .bg-emerald-700,
+.monsa-high-contrast .bg-cyan-700,
+.monsa-high-contrast .bg-\[\#0B2D52\] {
+  color: #ffffff !important;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  body * {
+    visibility: hidden !important;
+  }
+  #eval-print-sheet,
+  #eval-print-sheet * {
+    visibility: visible !important;
+  }
+  #eval-print-sheet {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+  }
+}

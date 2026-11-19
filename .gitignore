@@ -1,0 +1,31 @@
+# --- Node / frontend ---
+node_modules/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# --- Environment & rahasia ---
+.env
+.env.*
+!.env.example
+frontend/.env.local
+
+# --- Database (termasuk WAL/SHM; data produksi tidak masuk versi) ---
+server/*.db
+server/*.db-wal
+server/*.db-shm
+
+# --- Data pribadi / bukti unggahan (sama seperti DB: tidak masuk versi) ---
+uploads/
+
+# --- Artefak build / editor ---
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# CATATAN: web_bundle/ TIDAK di-ignore — bundle ikut ter-commit agar
+# deploy server tidak membutuhkan proses build frontend.
