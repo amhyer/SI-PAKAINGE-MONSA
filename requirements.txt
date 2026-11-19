@@ -5,3 +5,4 @@
 #
 # Hanya untuk pengembangan/test:
 pytest>=8.0
+pyflakes>=3.2   # tool dev — tidak dipakai runtime; gerbang statis Fase 4A

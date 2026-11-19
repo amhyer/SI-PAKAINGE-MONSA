@@ -2522,6 +2522,11 @@ class SikolaHandler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
 
+# Alias kontrak (Fase 4A): akan diganti `from handler_base import
+# SikolaHandlerBase` pada Task 9 — nama ini dikunci test_module_surface.
+SikolaHandlerBase = SikolaHandler
+
+
 class MonsaThreadingHTTPServer(ThreadingHTTPServer):
     request_queue_size = 128
     daemon_threads = True
