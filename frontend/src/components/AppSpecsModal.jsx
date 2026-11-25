@@ -10,6 +10,7 @@ import {
   Cpu,
 } from 'lucide-react';
 import { CLIENT_APP_INFO } from '../constants';
+import ModalShell from './ModalShell';
 
 export default function AppSpecsModal({
   open,
@@ -31,20 +32,18 @@ export default function AppSpecsModal({
   const hasAnyUpdate = hasNewerServer || swWaiting;
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4"
-      onClick={onClose}
+    <ModalShell
+      onClose={onClose}
+      titleId="app-specs-modal-title"
+      backdropClassName="bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4"
+      panelClassName="w-full max-w-xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[90vh] flex flex-col overflow-hidden"
     >
-      <div
-        className="w-full max-w-xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[90vh] flex flex-col overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
         <div className="bg-[#0B2D52] text-white px-5 py-4 flex items-center justify-between gap-3 shrink-0">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-wider text-cyan-200">
               Informasi Resmi & Pembaruan Aplikasi
             </p>
-            <h3 className="text-base font-extrabold">{info.app_name || CLIENT_APP_INFO.app_name}</h3>
+            <h3 id="app-specs-modal-title" className="text-base font-extrabold">{info.app_name || CLIENT_APP_INFO.app_name}</h3>
           </div>
           <button
             type="button"
@@ -200,7 +199,6 @@ export default function AppSpecsModal({
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

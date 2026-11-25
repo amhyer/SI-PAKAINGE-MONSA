@@ -47,6 +47,7 @@ import StaffResultsTab from './components/StaffResultsTab';
 import ServiceStandardsCard from './components/ServiceStandardsCard';
 import PublicFkpBoard from './components/PublicFkpBoard';
 import AppSpecsModal from './components/AppSpecsModal';
+import ModalShell from './components/ModalShell';
 import ChatbotDrawer from './components/ChatbotDrawer';
 import { ToastBanner } from './components/ConfirmModal';
 import { tLabel } from './utils/i18n';
@@ -1038,8 +1039,12 @@ export default function App() {
       />
 
       {zoomPrincipalPhoto && school?.principal_photo && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4" onClick={() => setZoomPrincipalPhoto(false)}>
-          <div className="relative max-w-md w-full bg-white rounded-3xl overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <ModalShell
+          onClose={() => setZoomPrincipalPhoto(false)}
+          label="Foto kepala sekolah"
+          backdropClassName="bg-slate-950/80 flex items-center justify-center p-4"
+          panelClassName="relative max-w-md w-full bg-white rounded-3xl overflow-hidden shadow-2xl"
+        >
             <button
               type="button"
               onClick={() => setZoomPrincipalPhoto(false)}
@@ -1053,8 +1058,7 @@ export default function App() {
               <p className="text-sm font-extrabold text-[#0B2D52]">{school.principal_name}</p>
               <p className="text-xs text-slate-500">Kepala {school.short_name} · NIP. 198112072007012013</p>
             </div>
-          </div>
-        </div>
+        </ModalShell>
       )}
     </div>
   );

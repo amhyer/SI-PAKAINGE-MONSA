@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Bot, Send, X, BookOpen, Lock, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import { apiFetch } from '../api';
 import { isTtsSupported, speakText, stopSpeech } from '../utils/speech';
+import ModalShell from './ModalShell';
 
 export default function ChatbotDrawer({ open, onClose, user, school, onNavigateTab }) {
   const [question, setQuestion] = useState('');
@@ -56,15 +57,20 @@ export default function ChatbotDrawer({ open, onClose, user, school, onNavigateT
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="bg-white w-full sm:max-w-lg h-[88vh] sm:h-[80vh] rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
+    <ModalShell
+      onClose={onClose}
+      titleId="chatbot-modal-title"
+      closeOnBackdrop={false}
+      backdropClassName="bg-slate-900/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4"
+      panelClassName="bg-white w-full sm:max-w-lg h-[88vh] sm:h-[80vh] rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200"
+    >
         <div className="bg-gradient-to-r from-[#0B2D52] to-[#0E7490] text-white px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center">
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-bold text-sm leading-tight">Asisten SI-PAKAINGE MONSA</h3>
+              <h3 id="chatbot-modal-title" className="font-bold text-sm leading-tight">Asisten SI-PAKAINGE MONSA</h3>
               <p className="text-[11px] text-cyan-100 flex items-center gap-1 mt-0.5">
                 <Lock className="w-3 h-3" />
                 {user ? `Peran: ${user.role.replace('_', ' ')}` : 'Mode Tamu'} · PEKPPP & Ramah Rentan
@@ -197,7 +203,6 @@ export default function ChatbotDrawer({ open, onClose, user, school, onNavigateT
             <Send className="w-4 h-4" />
           </button>
         </form>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

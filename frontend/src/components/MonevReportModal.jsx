@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FileSpreadsheet, FileText, Copy, X, Check, Printer } from 'lucide-react';
 import { apiFetch, buildApiUrl, getTenantCode, getToken } from '../api';
 import { downloadEvaluationPdf } from '../utils/pdfReport';
+import ModalShell from './ModalShell';
 
 export default function MonevReportModal({ open, onClose, school, onToast }) {
   const [loading, setLoading] = useState(false);
@@ -147,14 +148,19 @@ export default function MonevReportModal({ open, onClose, school, onToast }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3">
-      <div className="bg-white w-full max-w-2xl max-h-[88vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
+    <ModalShell
+      onClose={onClose}
+      titleId="monev-report-title"
+      closeOnBackdrop={false}
+      backdropClassName="bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3"
+      panelClassName="bg-white w-full max-w-2xl max-h-[88vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
+    >
         <div className="bg-[#0B2D52] text-white px-5 py-4 flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-sm">Ekspor Laporan Monev & FKP_UPP (PEKPPP 05B & 06B)</h3>
+            <h3 id="monev-report-title" className="font-bold text-sm">Ekspor Laporan Monev & FKP_UPP (PEKPPP 05B & 06B)</h3>
             <p className="text-[11px] text-cyan-200 mt-0.5">{school?.name || 'UPTD SPF SD Negeri Unggulan Mongisidi 1'}</p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">
+          <button type="button" onClick={onClose} className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center" aria-label="Tutup laporan monev">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -226,7 +232,6 @@ export default function MonevReportModal({ open, onClose, school, onToast }) {
             </>
           )}
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

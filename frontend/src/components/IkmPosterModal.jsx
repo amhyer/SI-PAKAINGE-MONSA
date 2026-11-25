@@ -3,6 +3,7 @@ import { downloadIkmPosterPdf } from '../utils/pdfReport';
 import { getIkmGradeInfo } from '../utils/ikm';
 import { localDateYmd } from '../utils/sla';
 import logoMonsa from '../assets/logo-monsa.png';
+import ModalShell from './ModalShell';
 
 export default function IkmPosterModal({ open, onClose, school, ikmSummary, onToast }) {
   if (!open) return null;
@@ -34,14 +35,15 @@ export default function IkmPosterModal({ open, onClose, school, ikmSummary, onTo
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4" onClick={onClose}>
-      <div
-        className="bg-white w-full max-w-3xl max-h-[92vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalShell
+      onClose={onClose}
+      titleId="ikm-poster-title"
+      backdropClassName="bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4"
+      panelClassName="bg-white w-full max-w-3xl max-h-[92vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
+    >
         <div className="bg-[#0B2D52] text-white px-4 py-3 flex items-center justify-between gap-2 flex-wrap">
           <div>
-            <h3 className="text-sm font-bold">Pratinjau Poster Publikasi IKM Sekolah (PermenPAN-RB 14/2017)</h3>
+            <h3 id="ikm-poster-title" className="text-sm font-bold">Pratinjau Poster Publikasi IKM Sekolah (PermenPAN-RB 14/2017)</h3>
             <p className="text-[11px] text-cyan-200">Siap Cetak A4 untuk Papan Pelayanan Sekolah & Bukti PEKPPP</p>
           </div>
           <div className="flex items-center gap-2">
@@ -156,7 +158,6 @@ export default function IkmPosterModal({ open, onClose, school, ikmSummary, onTo
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }
