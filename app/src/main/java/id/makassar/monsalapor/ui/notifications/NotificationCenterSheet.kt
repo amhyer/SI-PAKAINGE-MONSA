@@ -3,6 +3,7 @@ package id.makassar.monsalapor.ui.notifications
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -93,11 +94,11 @@ fun openStatusUpdateEmail(
         appendLine("Email Sekolah    : ${MonsaEnvironment.schoolEmailFrom}")
         appendLine("Dikirim melalui aplikasi SI-PAKAINGE MONSA.")
     }
-    val mailtoUri = Uri.parse(
+    val mailtoUri = (
         "mailto:${Uri.encode(targetEmail)}" +
             "?subject=${Uri.encode(subject)}" +
-            "&body=${Uri.encode(body)}",
-    )
+            "&body=${Uri.encode(body)}"
+        ).toUri()
     runCatching {
         val intent = Intent(Intent.ACTION_SENDTO, mailtoUri).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

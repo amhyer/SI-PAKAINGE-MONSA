@@ -76,6 +76,46 @@ class MonsaFirestoreRepository(
         }
     }
 
+    fun observeIsSchoolAdmin(userId: String): Flow<Boolean> {
+        val currentEmail = auth.currentUser?.email?.trim().orEmpty()
+        val isEmailAdmin = currentEmail.equals(DEFAULT_ADMIN_EMAIL, ignoreCase = true)
+        return db.collection("users").document(userId)
+            .snapshots()
+            .map { snapshot ->
+                isEmailAdmin || snapshot.getString("role") == "admin"
+            }
+            .catch { error ->
+                val firestoreError = generateSequence(error) { it.cause }
+                    .filterIsInstance<FirebaseFirestoreException>()
+                    .firstOrNull()
+                if (firestoreError == null && error is CancellationException) throw error
+                emit(isEmailAdmin)
+            }
+    }
+
+    fun observeAllSchoolComplaints(): Flow<List<CloudComplaint>> {
+        val path = "collectionGroup/complaints"
+        return db.collectionGroup("complaints")
+            .snapshots()
+            .map { snapshot ->
+                snapshot.toObjects(
+                    CloudComplaint::class.java,
+                    DocumentSnapshot.ServerTimestampBehavior.ESTIMATE,
+                ).sortedByDescending { it.createdAt ?: Timestamp(0, 0) }
+            }
+            .catch { error ->
+                val firestoreError = generateSequence(error) { it.cause }
+                    .filterIsInstance<FirebaseFirestoreException>()
+                    .firstOrNull()
+                if (firestoreError == null && error is CancellationException) throw error
+                val exceptionToLog = firestoreError ?: (error as? Exception)
+                if (exceptionToLog != null && auth.currentUser != null) {
+                    handleFirestoreError(exceptionToLog, OperationType.LIST, path)
+                }
+                throw error
+            }
+    }
+
     fun observeComplaints(
         userId: String,
         statusFilter: ComplaintStatusFilter = ComplaintStatusFilter.ALL,
@@ -496,6 +536,7 @@ class MonsaFirestoreRepository(
     }
 
     companion object {
+        const val DEFAULT_ADMIN_EMAIL = "amhyer21091993@gmail.com"
         const val STATUS_WAITING = "Diterima"
         const val STATUS_VERIFIED = "Diverifikasi Piket/TPPK"
         const val STATUS_IN_PROGRESS = "Ditangani TPPK/Kepsek"

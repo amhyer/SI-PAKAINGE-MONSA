@@ -389,3 +389,70 @@ test("StatusNotification: owner create, list, mark-read & delete succeed; conten
   await assertSucceeds(notifRef.delete());
 });
 
+test("School Admin RBAC: verified admin monitors all complaints via collectionGroup; regular users cannot escalate", async () => {
+  const aliceDb = testEnv.authenticatedContext(ALICE_UID).firestore();
+  const bobDb = testEnv.authenticatedContext(BOB_UID).firestore();
+  const adminDb = testEnv
+    .authenticatedContext("admin_uid_001", {
+      email: "amhyer21091993@gmail.com",
+      email_verified: true,
+    })
+    .firestore();
+  const created = new Date(Date.now() - 10000);
+
+  // Regular user cannot self-assign admin role on create
+  await assertFails(
+    bobDb.collection("users").doc(BOB_UID).set({
+      userId: BOB_UID,
+      displayName: "Bob",
+      role: "admin",
+      roleLabel: "Admin Palsu",
+      createdAt: created,
+      updatedAt: created,
+    })
+  );
+
+  // Alice creates a complaint
+  const aliceComplaint = aliceDb
+    .collection("users")
+    .doc(ALICE_UID)
+    .collection("complaints")
+    .doc("cmp_school_01");
+
+  await assertSucceeds(
+    aliceComplaint.set({
+      userId: ALICE_UID,
+      ticketCode: "ADU-MONSA-901",
+      category: "Fasilitas Kelas / Toilet / Kantin",
+      urgency: "Penting",
+      locationDetail: "Ruang UKS",
+      description: "Lampu ruang UKS padam perlu penggantian segera.",
+      status: "Diterima",
+      anonymousReport: false,
+      priorityRentan: false,
+      createdAt: created,
+      updatedAt: created,
+    })
+  );
+
+  // Regular user Bob cannot run collectionGroup query across all complaints
+  await assertFails(bobDb.collectionGroup("complaints").get());
+
+  // Verified school admin can monitor all complaints via collectionGroup
+  await assertSucceeds(adminDb.collectionGroup("complaints").get());
+
+  // Verified school admin can advance complaint status
+  await assertSucceeds(
+    adminDb
+      .collection("users")
+      .doc(ALICE_UID)
+      .collection("complaints")
+      .doc("cmp_school_01")
+      .update({
+        status: "Ditangani TPPK/Kepsek",
+        updatedAt: new Date(Date.now() - 1000),
+      })
+  );
+});
+
+

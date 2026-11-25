@@ -9,6 +9,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -92,6 +93,9 @@ fun attemptAutoSignIn(
             } else {
                 onUnauthenticated()
             }
+        } catch (e: NoCredentialException) {
+            Log.d(AUTH_TAG, "No cached Google credential available for auto sign-in: ${e.message}")
+            onUnauthenticated()
         } catch (e: CancellationException) {
             throw e
         } catch (_: Throwable) {
@@ -138,6 +142,9 @@ fun onGoogleSignInClicked(
         } catch (e: GetCredentialCancellationException) {
             Log.w(AUTH_TAG, "Google Sign-In flow cancelled or dismissed: ${e.message}", e)
             onAuthCancelled()
+        } catch (e: NoCredentialException) {
+            Log.w(AUTH_TAG, "No Google account available on device: ${e.message}", e)
+            onAuthError("Belum ada akun Google yang tersedia di perangkat ini. Silakan tambahkan akun Google di Pengaturan perangkat.")
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {

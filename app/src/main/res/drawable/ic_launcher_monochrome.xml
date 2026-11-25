@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Monochrome shield outline + open book & star silhouette inside 66dp safe zone -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,28 L33,36.5 V53 C33,66.2 42.1,77.6 54,81 C65.9,77.6 75,66.2 75,53 V36.5 L54,28 Z M54,32.5 L70.5,39.2 V53 C70.5,63.7 63.3,73.1 54,76.3 C44.7,73.1 37.5,63.7 37.5,53 V39.2 L54,32.5 Z" />
+    <!-- Top star emblem -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,37.5 L55.8,41.6 L60.2,42 L56.9,44.9 L57.9,49.2 L54,46.9 L50.1,49.2 L51.1,44.9 L47.8,42 L52.2,41.6 Z" />
+    <!-- Open book representing inclusive education & transparent service -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M41.5,52.5 C46.2,52.5 50.5,53.9 53,56.2 V67.2 C50.3,65.2 46.1,64.1 41.5,64.1 Z M66.5,52.5 C61.8,52.5 57.5,53.9 55,56.2 V67.2 C57.7,65.2 61.9,64.1 66.5,64.1 Z" />
+</vector>

@@ -1,5 +1,6 @@
 package id.makassar.monsalapor.ui.ai
 
+import android.content.ClipData
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,18 +33,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import id.makassar.monsalapor.R
 import id.makassar.monsalapor.data.GeminiChatMessage
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -204,12 +207,13 @@ internal fun ChatBubble(
     isStreamingBubble: Boolean = false,
 ) {
     val isUser = message.sender == "user"
-    val clipboard = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
+    val scope = rememberCoroutineScope()
     var copied by remember(message.id) { mutableStateOf(false) }
 
     val timeLabel = remember(message.createdAt) {
         message.createdAt?.toDate()?.let { date ->
-            SimpleDateFormat("HH:mm", Locale("id", "ID")).format(date)
+            SimpleDateFormat("HH:mm", Locale.forLanguageTag("id-ID")).format(date)
         }
     }
 
@@ -302,8 +306,12 @@ internal fun ChatBubble(
                         if (!isUser && !isStreamingBubble && message.text.isNotBlank()) {
                             IconButton(
                                 onClick = {
-                                    clipboard.setText(AnnotatedString(message.text))
-                                    copied = true
+                                    scope.launch {
+                                        clipboard.setClipEntry(
+                                            ClipEntry(ClipData.newPlainText("Monsa AI", message.text)),
+                                        )
+                                        copied = true
+                                    }
                                 },
                                 modifier = Modifier.size(28.dp),
                             ) {

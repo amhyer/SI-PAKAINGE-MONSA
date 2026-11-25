@@ -17,6 +17,11 @@
           "type": "string",
           "description": "Optional email address from Google Sign-In (max 150 chars)"
         },
+        "role": {
+          "type": "string",
+          "enum": ["user", "admin"],
+          "description": "Access control role (default user; admin granted by school operator)"
+        },
         "roleLabel": {
           "type": "string",
           "description": "User role in school community (1-60 chars)"

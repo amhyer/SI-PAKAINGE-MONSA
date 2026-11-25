@@ -2,6 +2,7 @@ package id.makassar.monsalapor.ui.maps
 
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -69,7 +70,7 @@ fun SchoolMapsScreen(
 
     fun openExternalUri(uriString: String) {
         runCatching {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uriString)).apply {
+            val intent = Intent(Intent.ACTION_VIEW, uriString.toUri()).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)

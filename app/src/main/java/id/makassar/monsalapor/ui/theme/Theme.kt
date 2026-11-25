@@ -7,9 +7,14 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -23,6 +28,33 @@ val HighContrastBlack = Color(0xFF000000)
 val HighContrastSurface = Color(0xFF0A0A0A)
 val HighContrastYellow = Color(0xFFFACC15)
 val HighContrastYellowBright = Color(0xFFFDE047)
+
+@Immutable
+data class MonsaExtendedColors(
+    val success: Color,
+    val chartPurple: Color,
+    val chartEmerald: Color,
+    val mapZoneFill: Color,
+    val mapZoneStroke: Color,
+)
+
+private val LightExtendedColors = MonsaExtendedColors(
+    success = Color(0xFF16A34A),
+    chartPurple = Color(0xFF7C3AED),
+    chartEmerald = Color(0xFF059669),
+    mapZoneFill = Color(0x220E7490),
+    mapZoneStroke = Color(0xAA0B2D52),
+)
+
+private val HighContrastExtendedColors = MonsaExtendedColors(
+    success = Color(0xFF4ADE80),
+    chartPurple = Color(0xFFD8B4FE),
+    chartEmerald = Color(0xFF5EEAD4),
+    mapZoneFill = Color(0x33FACC15),
+    mapZoneStroke = HighContrastYellow,
+)
+
+val LocalMonsaExtendedColors = staticCompositionLocalOf { LightExtendedColors }
 
 private val MonsaColorScheme = lightColorScheme(
     primary = MonsaNavy,
@@ -110,12 +142,29 @@ private val MonsaShapes = Shapes(
 @Composable
 fun SiPakaingeMonsaTheme(
     highContrast: Boolean = false,
+    largeText: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-    MaterialTheme(
-        colorScheme = if (highContrast) MonsaHighContrastColorScheme else MonsaColorScheme,
-        typography = MonsaTypography,
-        shapes = MonsaShapes,
-        content = content,
-    )
+    val currentDensity = LocalDensity.current
+    val scaledDensity = if (largeText) {
+        Density(
+            density = currentDensity.density,
+            fontScale = (currentDensity.fontScale * 1.22f).coerceAtMost(1.85f),
+        )
+    } else {
+        currentDensity
+    }
+    val extendedColors = if (highContrast) HighContrastExtendedColors else LightExtendedColors
+
+    CompositionLocalProvider(
+        LocalDensity provides scaledDensity,
+        LocalMonsaExtendedColors provides extendedColors,
+    ) {
+        MaterialTheme(
+            colorScheme = if (highContrast) MonsaHighContrastColorScheme else MonsaColorScheme,
+            typography = MonsaTypography,
+            shapes = MonsaShapes,
+            content = content,
+        )
+    }
 }

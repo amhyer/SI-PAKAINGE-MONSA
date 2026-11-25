@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -57,6 +58,16 @@ class CloudComplaintsViewModel(
                 initialValue = UiState.Loading,
             )
 
+    val isSchoolAdmin: StateFlow<Boolean> = repository.observeIsSchoolAdmin(currentUserId)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MS),
+            initialValue = false,
+        )
+
+    private val _dashboardSchoolWide = MutableStateFlow(true)
+    val dashboardSchoolWide: StateFlow<Boolean> = _dashboardSchoolWide.asStateFlow()
+
     private val allComplaintsState: StateFlow<UiState<List<CloudComplaint>>> =
         repository.observeComplaints(currentUserId, ComplaintStatusFilter.ALL)
             .map<List<CloudComplaint>, UiState<List<CloudComplaint>>> { UiState.Success(it) }
@@ -76,12 +87,30 @@ class CloudComplaintsViewModel(
             )
 
     val dashboardAnalytics: StateFlow<UiState<ComplaintDashboardAnalytics>> =
-        allComplaintsState
-            .map { state ->
-                when (state) {
-                    is UiState.Loading -> UiState.Loading
-                    is UiState.Error -> UiState.Error(state.message)
-                    is UiState.Success -> UiState.Success(computeDashboardAnalytics(state.data))
+        combine(isSchoolAdmin, _dashboardSchoolWide) { admin, schoolWide -> admin && schoolWide }
+            .flatMapLatest { useSchoolWide ->
+                if (useSchoolWide) {
+                    repository.observeAllSchoolComplaints()
+                        .map<List<CloudComplaint>, UiState<ComplaintDashboardAnalytics>> {
+                            UiState.Success(computeDashboardAnalytics(it))
+                        }
+                        .catch { error ->
+                            val firestoreError = generateSequence(error) { it.cause }
+                                .filterIsInstance<FirebaseFirestoreException>()
+                                .firstOrNull()
+                            if (firestoreError == null && error is CancellationException) throw error
+                            Log.w(TAG, "Fallback ke analitik pribadi karena akses collectionGroup dibatasi", firestoreError ?: error)
+                            val fallback = (allComplaintsState.value as? UiState.Success)?.data.orEmpty()
+                            emit(UiState.Success(computeDashboardAnalytics(fallback)))
+                        }
+                } else {
+                    allComplaintsState.map { state ->
+                        when (state) {
+                            is UiState.Loading -> UiState.Loading
+                            is UiState.Error -> UiState.Error(state.message)
+                            is UiState.Success -> UiState.Success(computeDashboardAnalytics(state.data))
+                        }
+                    }
                 }
             }
             .stateIn(
@@ -89,6 +118,10 @@ class CloudComplaintsViewModel(
                 started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MS),
                 initialValue = UiState.Loading,
             )
+
+    fun setDashboardSchoolWide(schoolWide: Boolean) {
+        _dashboardSchoolWide.value = schoolWide
+    }
 
     val statusCounts: StateFlow<ComplaintStatusCounts> =
         allComplaintsState

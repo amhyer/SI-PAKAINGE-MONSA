@@ -2,6 +2,7 @@ package id.makassar.monsalapor.ui
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,10 +30,10 @@ class AccessibilityPreferencesRepository(context: Context) {
     fun isHighContrastEnabled(): Boolean = prefs.getBoolean(KEY_HIGH_CONTRAST, false)
 
     fun save(largeText: Boolean, highContrast: Boolean) {
-        prefs.edit()
-            .putBoolean(KEY_LARGE_TEXT, largeText)
-            .putBoolean(KEY_HIGH_CONTRAST, highContrast)
-            .apply()
+        prefs.edit {
+            putBoolean(KEY_LARGE_TEXT, largeText)
+            putBoolean(KEY_HIGH_CONTRAST, highContrast)
+        }
     }
 
     companion object {

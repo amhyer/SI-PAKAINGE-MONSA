@@ -242,7 +242,6 @@ fun MonsaWebScreen(
                     settings.apply {
                         javaScriptEnabled = true
                         domStorageEnabled = true
-                        databaseEnabled = true
                         mediaPlaybackRequiresUserGesture = false
                         allowFileAccess = false
                         allowContentAccess = true

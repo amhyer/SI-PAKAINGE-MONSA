@@ -52,7 +52,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            SiPakaingeMonsaTheme(highContrast = a11yState.highContrastEnabled) {
+            SiPakaingeMonsaTheme(
+                highContrast = a11yState.highContrastEnabled,
+                largeText = a11yState.largeTextEnabled,
+            ) {
                 MonsaAppShell(
                     initialQuery = launchQuery,
                     a11yState = a11yState,

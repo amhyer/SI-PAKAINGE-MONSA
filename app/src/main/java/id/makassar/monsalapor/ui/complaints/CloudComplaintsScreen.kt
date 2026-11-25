@@ -33,11 +33,13 @@ import id.makassar.monsalapor.R
 @Composable
 fun CloudComplaintsScreen(
     viewModel: CloudComplaintsViewModel,
-    jumpToHistoryToken: Int = 0,
     modifier: Modifier = Modifier,
+    jumpToHistoryToken: Int = 0,
 ) {
     val state by viewModel.complaintsState.collectAsStateWithLifecycle()
     val dashboardAnalytics by viewModel.dashboardAnalytics.collectAsStateWithLifecycle()
+    val isSchoolAdmin by viewModel.isSchoolAdmin.collectAsStateWithLifecycle()
+    val dashboardSchoolWide by viewModel.dashboardSchoolWide.collectAsStateWithLifecycle()
     val selectedFilter by viewModel.selectedStatusFilter.collectAsStateWithLifecycle()
     val statusCounts by viewModel.statusCounts.collectAsStateWithLifecycle()
     val isSubmitting by viewModel.isSubmitting.collectAsStateWithLifecycle()
@@ -156,6 +158,9 @@ fun CloudComplaintsScreen(
                 )
                 else -> ComplaintDashboardComponent(
                     analyticsState = dashboardAnalytics,
+                    isSchoolAdmin = isSchoolAdmin,
+                    isSchoolWideScope = dashboardSchoolWide,
+                    onToggleScope = viewModel::setDashboardSchoolWide,
                     onFilterHistory = { filter ->
                         viewModel.selectStatusFilter(filter)
                         selectedSection = 1

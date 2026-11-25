@@ -74,6 +74,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import id.makassar.monsalapor.R
 import id.makassar.monsalapor.config.MonsaEnvironment
+import id.makassar.monsalapor.ui.theme.LocalMonsaExtendedColors
 import kotlinx.coroutines.launch
 
 private enum class SchoolMapLayer(
@@ -404,12 +405,13 @@ private fun NativeGoogleMapViewport(
                 )
             }
 
-            // Zona Selamat Sekolah (ZoSS) 45m radius highlight
+            // Zona Selamat Sekolah (ZoSS) 45m radius highlight (theme-aware)
+            val extendedColors = LocalMonsaExtendedColors.current
             Circle(
                 center = schoolLatLng,
                 radius = 45.0,
-                fillColor = Color(0x220E7490),
-                strokeColor = Color(0xAA0B2D52),
+                fillColor = extendedColors.mapZoneFill,
+                strokeColor = extendedColors.mapZoneStroke,
                 strokeWidth = 3f,
             )
         }

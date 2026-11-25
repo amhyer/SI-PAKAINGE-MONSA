@@ -84,7 +84,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            assets.srcDirs("src/main/assets", "../web_bundle")
+            assets.directories.addAll(listOf("src/main/assets", "../web_bundle"))
         }
     }
 

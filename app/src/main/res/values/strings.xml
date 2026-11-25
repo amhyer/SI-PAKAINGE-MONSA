@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SI-PAKAINGE MONSA</string>
+    <string name="app_name">Si-Pakainge Monsa</string>
     <string name="school_subtitle">UPTD SPF SDN Unggulan Mongisidi 1 Makassar</string>
     <string name="loading_app">Memuat layanan SI-PAKAINGE MONSA…</string>
     <string name="error_load_title">Halaman tidak dapat dimuat</string>
@@ -25,7 +25,10 @@
     <string name="a11y_reset_default">Reset Standar</string>
     <string name="a11y_enable_all">Aktifkan Semua</string>
     <string name="a11y_close">Selesai</string>
-    <string name="a11y_active_count_format">%1$d aktif</string>
+    <plurals name="a11y_active_count_format">
+        <item quantity="one">%1$d aktif</item>
+        <item quantity="other">%1$d aktif</item>
+    </plurals>
 
     <!-- Bottom Navigation -->
     <string name="nav_portal">Portal</string>
@@ -38,7 +41,6 @@
     <string name="auth_subtitle">Masuk dengan akun Google untuk menyinkronkan pengaduan Cloud Firestore, Asisten Gemini, Suara Live, dan Peta Lokasi Sekolah.</string>
     <string name="auth_sign_in_google">Masuk dengan Google</string>
     <string name="auth_signing_in">Menghubungkan akun Google…</string>
-    <string name="auth_sign_out">Keluar</string>
     <string name="auth_sign_out_cd">Keluar dari akun Google</string>
 
     <!-- Cloud Complaints (Firestore) -->
@@ -48,6 +50,9 @@
     <string name="cloud_mode_history">Riwayat</string>
     <string name="cloud_mode_dashboard">Dashboard</string>
     <string name="dash_realtime_banner">Analitik Real-Time · Diperbarui otomatis dari Cloud Firestore</string>
+    <string name="dash_scope_school">Semua Sekolah</string>
+    <string name="dash_scope_mine">Laporan Saya</string>
+    <string name="dash_admin_banner">Mode Pengelola Sekolah · Memantau seluruh aduan masuk secara real-time</string>
     <string name="dash_kpi_total">Total Laporan</string>
     <string name="dash_kpi_completion">Terselesaikan</string>
     <string name="dash_kpi_rentan">Prioritas Rentan</string>
