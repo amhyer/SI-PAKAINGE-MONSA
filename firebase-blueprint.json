@@ -1,0 +1,247 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated Google user profile for SI-PAKAINGE MONSA",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID matching the document ID"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the user (1-100 chars)"
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional email address from Google Sign-In (max 150 chars)"
+        },
+        "roleLabel": {
+          "type": "string",
+          "description": "User role in school community (1-60 chars)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp written via FieldValue.serverTimestamp()"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp written via FieldValue.serverTimestamp()"
+        }
+      },
+      "required": ["userId", "displayName", "roleLabel", "createdAt", "updatedAt"]
+    },
+    "CloudComplaint": {
+      "title": "CloudComplaint",
+      "description": "User-authored school complaint or aspiration persisted in Cloud Firestore",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID"
+        },
+        "ticketCode": {
+          "type": "string",
+          "description": "Human-readable ticket code (3-40 chars)"
+        },
+        "category": {
+          "type": "string",
+          "description": "Complaint category (1-100 chars)"
+        },
+        "urgency": {
+          "type": "string",
+          "enum": ["Biasa", "Penting", "Darurat Anak"],
+          "description": "Urgency level"
+        },
+        "locationDetail": {
+          "type": "string",
+          "description": "Incident or facility location inside school (1-160 chars)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Complaint details (5-2000 chars)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Diterima", "Diverifikasi Piket/TPPK", "Ditangani TPPK/Kepsek", "Selesai"],
+          "description": "Processing status"
+        },
+        "anonymousReport": {
+          "type": "boolean",
+          "description": "Whether the reporter requested UU PDP anonymity (when true, reporterName must be omitted)"
+        },
+        "reporterName": {
+          "type": "string",
+          "description": "Optional reporter display name (max 100 chars, omitted when anonymousReport is true)"
+        },
+        "studentInfo": {
+          "type": "string",
+          "description": "Optional student class or identifier (max 100 chars)"
+        },
+        "priorityRentan": {
+          "type": "boolean",
+          "description": "Whether priority assistance for vulnerable groups is requested"
+        },
+        "vulnerableGroup": {
+          "type": "string",
+          "description": "Optional vulnerable group label (max 120 chars)"
+        },
+        "disabilityType": {
+          "type": "string",
+          "description": "Optional disability or special accommodation category (max 80 chars)"
+        },
+        "specialNeedNote": {
+          "type": "string",
+          "description": "Optional assistance note for school staff (max 300 chars)"
+        },
+        "routedTo": {
+          "type": "string",
+          "description": "Optional target school handling unit (max 100 chars)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp written via FieldValue.serverTimestamp()"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp written via FieldValue.serverTimestamp()"
+        }
+      },
+      "required": [
+        "userId",
+        "ticketCode",
+        "category",
+        "urgency",
+        "locationDetail",
+        "description",
+        "status",
+        "anonymousReport",
+        "priorityRentan",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "GeminiChatMessage": {
+      "title": "GeminiChatMessage",
+      "description": "Persisted multi-turn Gemini chatbot conversation message",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID"
+        },
+        "sender": {
+          "type": "string",
+          "enum": ["user", "model"],
+          "description": "Message author role"
+        },
+        "text": {
+          "type": "string",
+          "description": "Message content (1-8000 chars)"
+        },
+        "modelUsed": {
+          "type": "string",
+          "description": "Gemini model identifier (1-80 chars)"
+        },
+        "groundingSource": {
+          "type": "string",
+          "description": "Optional Google Maps grounding attribution text (max 500 chars)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp written via FieldValue.serverTimestamp()"
+        }
+      },
+      "required": ["userId", "sender", "text", "modelUsed", "createdAt"]
+    },
+    "StatusNotification": {
+      "title": "StatusNotification",
+      "description": "In-app notification recorded whenever a user's complaint status changes in Firestore",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID"
+        },
+        "complaintId": {
+          "type": "string",
+          "description": "Referenced complaint document ID (1-128 chars)"
+        },
+        "ticketCode": {
+          "type": "string",
+          "description": "Human-readable complaint ticket code (3-40 chars)"
+        },
+        "category": {
+          "type": "string",
+          "description": "Complaint category (1-100 chars)"
+        },
+        "previousStatus": {
+          "type": "string",
+          "description": "Previous complaint status (1-60 chars)"
+        },
+        "newStatus": {
+          "type": "string",
+          "description": "New complaint status (1-60 chars)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Notification title (1-120 chars)"
+        },
+        "message": {
+          "type": "string",
+          "description": "Notification body message (1-400 chars)"
+        },
+        "read": {
+          "type": "boolean",
+          "description": "Whether the notification has been read by the user"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp written via FieldValue.serverTimestamp()"
+        },
+        "readAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Optional server timestamp when marked as read"
+        }
+      },
+      "required": [
+        "userId",
+        "complaintId",
+        "ticketCode",
+        "category",
+        "previousStatus",
+        "newStatus",
+        "title",
+        "message",
+        "read",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private authenticated user profile document"
+    },
+    "/users/{userId}/complaints/{complaintId}": {
+      "schema": { "$ref": "#/entities/CloudComplaint" },
+      "description": "Per-user cloud complaints and aspirations"
+    },
+    "/users/{userId}/chatMessages/{messageId}": {
+      "schema": { "$ref": "#/entities/GeminiChatMessage" },
+      "description": "Per-user Gemini multi-turn chat history"
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/StatusNotification" },
+      "description": "Per-user real-time complaint status change notifications"
+    }
+  }
+}

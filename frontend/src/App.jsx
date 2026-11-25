@@ -47,11 +47,9 @@ import StaffResultsTab from './components/StaffResultsTab';
 import ServiceStandardsCard from './components/ServiceStandardsCard';
 import PublicFkpBoard from './components/PublicFkpBoard';
 import AppSpecsModal from './components/AppSpecsModal';
-import ModalShell from './components/ModalShell';
 import ChatbotDrawer from './components/ChatbotDrawer';
 import { ToastBanner } from './components/ConfirmModal';
 import { tLabel } from './utils/i18n';
-import { formatIkmScore } from './utils/ikm';
 import logoMonsa from './assets/logo-monsa.png';
 
 export default function App() {
@@ -94,6 +92,7 @@ export default function App() {
       return false;
     }
   });
+  const [a11yPanelOpen, setA11yPanelOpen] = useState(false);
   const [lang, setLang] = useState(() => {
     try {
       return localStorage.getItem('monsa_lang') === 'mks' ? 'mks' : 'id';
@@ -291,6 +290,18 @@ export default function App() {
     }
   }, [user, isOnline]);
 
+  useEffect(() => {
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.classList.toggle('monsa-a11y-large', a11yLarge);
+      document.body.classList.toggle('monsa-high-contrast', highContrast);
+    }
+    return () => {
+      if (typeof document !== 'undefined' && document.body) {
+        document.body.classList.remove('monsa-a11y-large', 'monsa-high-contrast');
+      }
+    };
+  }, [a11yLarge, highContrast]);
+
   function toggleA11yLarge() {
     setA11yLarge((prev) => {
       const next = !prev;
@@ -351,6 +362,19 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-1 shrink-0">
+            <button
+              type="button"
+              onClick={() => setA11yPanelOpen(true)}
+              className={`px-2 py-1 rounded-full text-[10px] font-extrabold border transition inline-flex items-center gap-1 ${
+                a11yLarge || highContrast
+                  ? 'bg-amber-400 text-[#0B2D52] border-amber-300'
+                  : 'bg-white/10 text-cyan-100 border-white/20 hover:bg-white/20'
+              }`}
+              title="Buka panel pengaturan aksesibilitas global"
+              aria-label="Panel pengaturan aksesibilitas"
+            >
+              <Accessibility className="w-3 h-3" />
+            </button>
             <button
               type="button"
               onClick={toggleA11yLarge}
@@ -688,7 +712,7 @@ export default function App() {
                     {' · '}
                     Respon Sekolah: <strong>{publicRecap?.avg_school_rating ? `${publicRecap.avg_school_rating}/5` : '-'}</strong>
                     {' · '}
-                    IKM: <strong>{publicRecap?.ikm_count ? `${formatIkmScore(publicRecap.ikm_score)} (${publicRecap.ikm_grade})` : '-'}</strong>
+                    IKM: <strong>{publicRecap?.ikm_count ? `${publicRecap.ikm_score} (${publicRecap.ikm_grade})` : '-'}</strong>
                     {' · '}
                     Tiket: <strong>{publicRecap?.avg_rating ? `${publicRecap.avg_rating}/5` : '-'}</strong>
                   </span>
@@ -1039,13 +1063,102 @@ export default function App() {
         onApplyUpdate={applySwOrReloadUpdate}
       />
 
-      {zoomPrincipalPhoto && school?.principal_photo && (
-        <ModalShell
-          onClose={() => setZoomPrincipalPhoto(false)}
-          label="Foto kepala sekolah"
-          backdropClassName="bg-slate-950/80 flex items-center justify-center p-4"
-          panelClassName="relative max-w-md w-full bg-white rounded-3xl overflow-hidden shadow-2xl"
+      {a11yPanelOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/70 flex items-end sm:items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Pengaturan Aksesibilitas Global"
+          onClick={() => setA11yPanelOpen(false)}
         >
+          <div
+            className="w-full max-w-md bg-white rounded-3xl border border-slate-200 shadow-2xl p-5 space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-cyan-50 text-cyan-800 flex items-center justify-center shrink-0">
+                  <Accessibility className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-extrabold text-[#0B2D52]">Pengaturan Aksesibilitas</h2>
+                  <p className="text-[11px] text-slate-500">
+                    Kelola kelas global <code>monsa-a11y-large</code> &amp; <code>monsa-high-contrast</code> pada halaman.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setA11yPanelOpen(false)}
+                className="p-1.5 rounded-full hover:bg-slate-100 text-slate-500"
+                aria-label="Tutup pengaturan aksesibilitas"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2.5">
+              <label className="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 cursor-pointer">
+                <div>
+                  <p className="text-xs font-extrabold text-slate-900">Mode Huruf Besar (Aa+)</p>
+                  <p className="text-[11px] text-slate-500">
+                    Mengaktifkan kelas <code>monsa-a11y-large</code> pada <code>document.body</code>.
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={a11yLarge}
+                  onChange={toggleA11yLarge}
+                  className="w-5 h-5 accent-[#0B2D52]"
+                  aria-label="Aktifkan monsa-a11y-large"
+                />
+              </label>
+
+              <label className="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 cursor-pointer">
+                <div>
+                  <p className="text-xs font-extrabold text-slate-900">Mode Kontras Tinggi</p>
+                  <p className="text-[11px] text-slate-500">
+                    Mengaktifkan kelas <code>monsa-high-contrast</code> pada <code>document.body</code>.
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={highContrast}
+                  onChange={toggleHighContrast}
+                  className="w-5 h-5 accent-[#0B2D52]"
+                  aria-label="Aktifkan monsa-high-contrast"
+                />
+              </label>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-1">
+              {(a11yLarge || highContrast) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (a11yLarge) toggleA11yLarge();
+                    if (highContrast) toggleHighContrast();
+                  }}
+                  className="px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                >
+                  Reset Standar
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setA11yPanelOpen(false)}
+                className="px-4 py-2 rounded-xl bg-[#0B2D52] text-white text-xs font-extrabold"
+              >
+                Selesai
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {zoomPrincipalPhoto && school?.principal_photo && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4" onClick={() => setZoomPrincipalPhoto(false)}>
+          <div className="relative max-w-md w-full bg-white rounded-3xl overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
               onClick={() => setZoomPrincipalPhoto(false)}
@@ -1059,7 +1172,8 @@ export default function App() {
               <p className="text-sm font-extrabold text-[#0B2D52]">{school.principal_name}</p>
               <p className="text-xs text-slate-500">Kepala {school.short_name} · NIP. 198112072007012013</p>
             </div>
-        </ModalShell>
+          </div>
+        </div>
       )}
     </div>
   );

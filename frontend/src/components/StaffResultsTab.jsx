@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { apiFetch } from '../api';
 import { computeSlaSummary, localDateYmd } from '../utils/sla';
-import { IKM_ELEMENTS, formatIkmScore, getIkmGradeInfo, simulateIkmFromNrr } from '../utils/ikm';
+import { IKM_ELEMENTS, getIkmGradeInfo, simulateIkmFromNrr } from '../utils/ikm';
 import MonevReportModal from './MonevReportModal';
 import EvaluationPrintModal from './EvaluationPrintModal';
 import IkmPosterModal from './IkmPosterModal';
@@ -461,7 +461,7 @@ export default function StaffResultsTab({
             const g = getIkmGradeInfo(ikmSummary?.ikm_score || 0, ikmSummary?.respondent_count || 0);
             return (
               <span className={`px-2.5 py-1 rounded-full border text-[11px] font-extrabold ${g.badgeClass}`}>
-                {ikmSummary?.respondent_count ? `IKM ${formatIkmScore(ikmSummary.ikm_score)} · Mutu ${g.grade} (${g.predicate})` : 'Mutu - (Belum Ada Responden)'}
+                {ikmSummary?.respondent_count ? `IKM ${Number(ikmSummary.ikm_score).toFixed(2)} · Mutu ${g.grade} (${g.predicate})` : 'Mutu - (Belum Ada Responden)'}
               </span>
             );
           })()}
@@ -501,7 +501,7 @@ export default function StaffResultsTab({
                 <div className="flex justify-between text-[11px]">
                   <span className="font-semibold text-slate-700 truncate pr-2">{el.label}</span>
                   <span className="font-extrabold text-[#0B2D52] shrink-0">
-                    NRR {el.nrr.toFixed(2)} · {el.konversi.toFixed(2)}
+                    NRR {el.nrr.toFixed(2)} · {el.konversi.toFixed(1)}
                   </span>
                 </div>
                 <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">
@@ -525,7 +525,7 @@ export default function StaffResultsTab({
                   Simulasi Target Skor IKM (9 Unsur)
                 </p>
                 <span className={`px-2.5 py-0.5 rounded-full border text-[11px] font-extrabold ${simGrade.badgeClass}`}>
-                  Simulasi: {formatIkmScore(simResult.ikm_score)} · Mutu {simGrade.grade} ({simGrade.predicate})
+                  Simulasi: {simResult.ikm_score.toFixed(2)} · Mutu {simGrade.grade} ({simGrade.predicate})
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -594,7 +594,7 @@ export default function StaffResultsTab({
                 <div key={w.key} className="bg-white rounded-xl p-2.5 border border-amber-200 flex items-center justify-between gap-2 text-[11px]">
                   <div className="min-w-0">
                     <p className="font-bold text-slate-800 truncate">{w.label}</p>
-                    <p className="text-[10px] text-amber-800">NRR {Number(w.nrr).toFixed(2)} · Konversi {Number(w.konversi).toFixed(2)}</p>
+                    <p className="text-[10px] text-amber-800">NRR {Number(w.nrr).toFixed(2)} · Konversi {Number(w.konversi).toFixed(1)}</p>
                   </div>
                   <button
                     type="button"

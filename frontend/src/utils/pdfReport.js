@@ -1,5 +1,4 @@
 import { localDateYmd } from './sla.js';
-import { formatIkmScore } from './ikm.js';
 
 // Pure-JS A4 PDF 1.4 generator for SI-PAKAINGE MONSA official school reports.
 // Zero external dependencies; works identically online, offline, in sandboxed previews, and in Android WebView.
@@ -409,7 +408,7 @@ export function buildIkmPosterPdfBytes({ school, ikmSummary, printedAt }) {
   drawLine(ML + leftW, y - 10, ML + leftW, y - 82, [0.82, 0.86, 0.9], 0.8);
 
   drawCentered('NILAI INDEKS KEPUASAN MASYARAKAT', ML + leftW / 2, y - 20, 8.8, 'F2', [0.25, 0.32, 0.4]);
-  drawCentered(cnt ? formatIkmScore(score) : '0.00', ML + leftW / 2, y - 54, 30, 'F2', [0.043, 0.176, 0.322]);
+  drawCentered(cnt ? score.toFixed(2) : '0.00', ML + leftW / 2, y - 54, 30, 'F2', [0.043, 0.176, 0.322]);
   drawCentered(`Skala 25.00 - 100.00 | Jumlah Responden: ${cnt} orang`, ML + leftW / 2, y - 75, 8.2, 'F1', [0.32, 0.38, 0.45]);
 
   const rightX = ML + leftW;
@@ -461,9 +460,9 @@ export function buildIkmPosterPdfBytes({ school, ikmSummary, printedAt }) {
     x0 += cols[0].w;
     drawText(cleanPdfText(el.label), x0 + 6, y - 14, 8, 'F2', [0.1, 0.15, 0.22]);
     x0 += cols[1].w;
-    drawText(cnt ? formatIkmScore(el.nrr) : '-', x0 + 18, y - 14, 8.2, 'F2', [0.043, 0.176, 0.322]);
+    drawText(cnt ? Number(el.nrr || 0).toFixed(2) : '-', x0 + 18, y - 14, 8.2, 'F2', [0.043, 0.176, 0.322]);
     x0 += cols[2].w;
-    drawText(cnt ? formatIkmScore(konv) : '-', x0 + 20, y - 14, 8.2, 'F2', [0.03, 0.42, 0.28]);
+    drawText(cnt ? konv.toFixed(2) : '-', x0 + 20, y - 14, 8.2, 'F2', [0.03, 0.42, 0.28]);
     x0 += cols[3].w;
     drawText(cat, x0 + 6, y - 14, 7.6, 'F1');
     y -= rowH;
@@ -472,8 +471,8 @@ export function buildIkmPosterPdfBytes({ school, ikmSummary, printedAt }) {
   y -= 16;
   if (cnt > 0 && ikmSummary?.highest_element && ikmSummary?.lowest_element) {
     drawRect(ML, y, CW, 42, [0.94, 0.98, 0.96], [0.68, 0.86, 0.76], 0.7);
-    drawText(`Unsur Tertinggi: ${cleanPdfText(ikmSummary.highest_element.label)} (NRR ${formatIkmScore(ikmSummary.highest_element.nrr)} / Konversi ${formatIkmScore(ikmSummary.highest_element.konversi)})`, ML + 10, y - 16, 8.2, 'F2', [0.03, 0.38, 0.24]);
-    drawText(`Prioritas Peningkatan: ${cleanPdfText(ikmSummary.lowest_element.label)} (NRR ${formatIkmScore(ikmSummary.lowest_element.nrr)} / Konversi ${formatIkmScore(ikmSummary.lowest_element.konversi)})`, ML + 10, y - 31, 8.2, 'F1', [0.2, 0.28, 0.35]);
+    drawText(`Unsur Tertinggi: ${cleanPdfText(ikmSummary.highest_element.label)} (NRR ${ikmSummary.highest_element.nrr} / Konversi ${ikmSummary.highest_element.konversi})`, ML + 10, y - 16, 8.2, 'F2', [0.03, 0.38, 0.24]);
+    drawText(`Prioritas Peningkatan: ${cleanPdfText(ikmSummary.lowest_element.label)} (NRR ${ikmSummary.lowest_element.nrr} / Konversi ${ikmSummary.lowest_element.konversi})`, ML + 10, y - 31, 8.2, 'F1', [0.2, 0.28, 0.35]);
     y -= 54;
   }
 
@@ -723,7 +722,7 @@ export function buildIkmRtlPdfBytes({ school, ikmSummary, rtlItems, weakestEleme
   y -= 18;
 
   drawRect(ML, y, CW, 46, [0.95, 0.98, 1], [0.76, 0.84, 0.92]);
-  drawText(`Skor IKM Saat Ini: ${formatIkmScore(ikmSummary?.ikm_score)} (Mutu: ${ikmSummary?.grade || '-'} - ${ikmSummary?.predicate || '-'})`, ML + 12, y - 16, 9, 'F2', [0.043, 0.176, 0.322]);
+  drawText(`Skor IKM Saat Ini: ${ikmSummary?.ikm_score ?? 0} (Mutu: ${ikmSummary?.grade || '-'} - ${ikmSummary?.predicate || '-'})`, ML + 12, y - 16, 9, 'F2', [0.043, 0.176, 0.322]);
   const weakText = (weakestElements || []).length
     ? weakestElements.map((w) => `${w.label} (NRR ${Number(w.nrr || 0).toFixed(2)})`).join(' | ')
     : 'Belum ada unsur lemah terdeteksi (isi survei IKM terlebih dahulu)';

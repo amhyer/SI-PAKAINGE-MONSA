@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SI-PAKAINGE MONSA</string>
+    <string name="school_subtitle">UPTD SPF SDN Unggulan Mongisidi 1 Makassar</string>
+    <string name="loading_app">Memuat layanan SI-PAKAINGE MONSA…</string>
+    <string name="error_load_title">Halaman tidak dapat dimuat</string>
+    <string name="error_load_retry">Muat Ulang</string>
+    <string name="share_file_chooser">Simpan atau Bagikan Dokumen MONSA</string>
+    <string name="print_job_name">SI-PAKAINGE MONSA Dokumen</string>
+
+    <!-- Global Accessibility Panel -->
+    <string name="a11y_fab_label">Aksesibilitas</string>
+    <string name="a11y_fab_cd">Buka pengaturan aksesibilitas global</string>
+    <string name="a11y_panel_title">Pengaturan Aksesibilitas</string>
+    <string name="a11y_panel_subtitle">Sesuaikan tampilan ramah lansia, low-vision &amp; kelompok rentan</string>
+    <string name="a11y_large_title">Mode Huruf Besar (Aa+)</string>
+    <string name="a11y_large_desc">Memperbesar ukuran teks dan area sentuh tombol di seluruh aplikasi.</string>
+    <string name="a11y_contrast_title">Mode Kontras Tinggi</string>
+    <string name="a11y_contrast_desc">Latar hitam pekat dengan aksen kuning tajam untuk visibilitas maksimal.</string>
+    <string name="a11y_preview_label">Pratinjau Tampilan</string>
+    <string name="a11y_preview_sample_title">SI-PAKAINGE MONSA · Layanan Inklusif</string>
+    <string name="a11y_preview_sample_body">Saling mengingatkan dengan hormat untuk layanan pendidikan yang transparan dan ramah semua kalangan.</string>
+    <string name="a11y_status_active">Aktif</string>
+    <string name="a11y_status_inactive">Nonaktif</string>
+    <string name="a11y_reset_default">Reset Standar</string>
+    <string name="a11y_enable_all">Aktifkan Semua</string>
+    <string name="a11y_close">Selesai</string>
+    <string name="a11y_active_count_format">%1$d aktif</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_portal">Portal</string>
+    <string name="nav_cloud_complaints">Aduan Cloud</string>
+    <string name="nav_gemini_ai">Asisten AI</string>
+    <string name="nav_maps">Peta Sekolah</string>
+
+    <!-- Google Sign-In & Auth -->
+    <string name="auth_title">Masuk ke SI-PAKAINGE MONSA</string>
+    <string name="auth_subtitle">Masuk dengan akun Google untuk menyinkronkan pengaduan Cloud Firestore, Asisten Gemini, Suara Live, dan Peta Lokasi Sekolah.</string>
+    <string name="auth_sign_in_google">Masuk dengan Google</string>
+    <string name="auth_signing_in">Menghubungkan akun Google…</string>
+    <string name="auth_sign_out">Keluar</string>
+    <string name="auth_sign_out_cd">Keluar dari akun Google</string>
+
+    <!-- Cloud Complaints (Firestore) -->
+    <string name="cloud_title">Pengaduan Cloud</string>
+    <string name="cloud_subtitle">Tersimpan aman &amp; sinkron real-time di Cloud Firestore</string>
+    <string name="cloud_mode_form">Formulir</string>
+    <string name="cloud_mode_history">Riwayat</string>
+    <string name="cloud_mode_dashboard">Dashboard</string>
+    <string name="dash_realtime_banner">Analitik Real-Time · Diperbarui otomatis dari Cloud Firestore</string>
+    <string name="dash_kpi_total">Total Laporan</string>
+    <string name="dash_kpi_completion">Terselesaikan</string>
+    <string name="dash_kpi_rentan">Prioritas Rentan</string>
+    <string name="dash_kpi_urgent">Darurat TPPK</string>
+    <string name="dash_filter_all">Semua Grafik</string>
+    <string name="dash_filter_status">Status</string>
+    <string name="dash_filter_category">Kategori</string>
+    <string name="dash_filter_trend">Tren 7 Hari</string>
+    <string name="dash_status_chart_title">Distribusi Status Pengaduan</string>
+    <string name="dash_status_chart_subtitle">Ketuk status untuk menyorot porsi atau melihat riwayat</string>
+    <string name="dash_total_label">Total</string>
+    <string name="dash_category_chart_title">Pengaduan per Kategori</string>
+    <string name="dash_category_chart_subtitle">Diurutkan dari kategori terbanyak secara real-time</string>
+    <string name="dash_trend_chart_title">Tren Pelaporan 7 Hari Terakhir</string>
+    <string name="dash_trend_chart_subtitle">Pemantauan intensitas laporan masuk harian</string>
+    <string name="dash_urgency_privacy_title">Urgensi &amp; Perlindungan Pelapor</string>
+    <string name="dash_empty_title">Belum ada data untuk ditampilkan di Dashboard</string>
+    <string name="dash_empty_desc">Kirim pengaduan pertama melalui tab Formulir untuk melihat grafik status, kategori, dan tren pelaporan secara real-time.</string>
+    <string name="cloud_add_button">Buat Aduan</string>
+    <string name="cloud_empty_title">Belum ada aduan cloud</string>
+    <string name="cloud_empty_desc">Isi formulir pengaduan untuk mengirim laporan atau aspirasi yang tersimpan aman di akun Anda.</string>
+    <string name="cloud_form_title">Formulir Pengaduan Resmi</string>
+    <string name="cloud_form_banner_desc">Terintegrasi Cloud Firestore, standar PEKPPP Aspek 05 &amp; Layanan Inklusif Perwali 68/2021. Target tindak lanjut maksimal 24 jam · Gratis Rp 0.</string>
+    <string name="cloud_category_label">1. Kategori Pengaduan</string>
+    <string name="cloud_urgency_label">2. Tingkat Urgensi</string>
+    <string name="cloud_rentan_section_title">3. Prioritas Kelompok Rentan &amp; Inklusi (LAKSA+)</string>
+    <string name="cloud_rentan_section_desc">Aktifkan untuk mendapatkan jalur prioritas tanpa antre &amp; penyesuaian layanan petugas.</string>
+    <string name="cloud_vulnerable_group_label">Kelompok Prioritas</string>
+    <string name="cloud_disability_label">Kebutuhan Khusus / Akomodasi (Opsional)</string>
+    <string name="cloud_special_note_label">Catatan Pendampingan Petugas (Opsional)</string>
+    <string name="cloud_special_note_placeholder">Contoh: Balas via teks WA atau siapkan kursi roda di gerbang</string>
+    <string name="cloud_location_section_title">4. Lokasi Kejadian &amp; Info Siswa</string>
+    <string name="cloud_location_label">Lokasi Kejadian / Fasilitas *</string>
+    <string name="cloud_location_placeholder">Contoh: Kelas IV-B, Toilet Disabilitas, Kantin, Loket TU</string>
+    <string name="cloud_student_info_label">Kelas / Info Siswa (Opsional)</string>
+    <string name="cloud_student_info_placeholder">Contoh: Kelas III-A (kosongkan jika tidak perlu)</string>
+    <string name="cloud_description_section_title">5. Uraian Kejadian / Aspirasi *</string>
+    <string name="cloud_description_label">Ceritakan kronologi secara jelas (min. 5 karakter)</string>
+    <string name="cloud_privacy_section_title">6. Privasi Identitas Pelapor (UU PDP)</string>
+    <string name="cloud_anonymous_label">Sembunyikan identitas pelapor (Anonim UU PDP No. 27/2022)</string>
+    <string name="cloud_reporter_name_label">Nama Pelapor (Opsional jika tidak anonim)</string>
+    <string name="cloud_reporter_name_placeholder">Contoh: Wali Murid Kelas IV-A</string>
+    <string name="cloud_rentan_label">Aktifkan Jalur Prioritas Kelompok Rentan / Disabilitas</string>
+    <string name="cloud_reset_form">Reset</string>
+    <string name="cloud_submit">Kirim Pengaduan ke Cloud</string>
+    <string name="cloud_submitting">Menyimpan ke Cloud Firestore…</string>
+    <string name="cloud_receipt_title">Pengaduan Berhasil Tersimpan</string>
+    <string name="cloud_receipt_view_history">Lihat di Riwayat Cloud</string>
+    <string name="cloud_filter_all">Semua</string>
+    <string name="cloud_filter_waiting">Menunggu</string>
+    <string name="cloud_filter_in_progress">Diproses</string>
+    <string name="cloud_filter_completed">Selesai</string>
+    <string name="cloud_empty_filter_title">Tidak ada pengaduan berstatus %1$s</string>
+    <string name="cloud_empty_filter_desc">Coba pilih filter status lain atau tampilkan seluruh riwayat pengaduan Anda.</string>
+    <string name="cloud_show_all_filter">Tampilkan Semua</string>
+    <string name="cloud_mark_in_progress">Proses</string>
+    <string name="cloud_mark_done">Tandai Selesai</string>
+    <string name="cloud_delete">Hapus</string>
+
+    <!-- Gemini Chatbot & Live Voice -->
+    <string name="ai_title">Asisten Gemini MONSA</string>
+    <string name="ai_mode_chat">Chat Gemini</string>
+    <string name="ai_mode_voice">Suara Live</string>
+    <string name="ai_input_placeholder">Tanyakan layanan, SOP, TPPK, atau info sekolah…</string>
+    <string name="ai_send_cd">Kirim pesan ke Gemini</string>
+    <string name="ai_clear_chat_cd">Hapus riwayat percakapan</string>
+    <string name="ai_empty_title">Halo! Saya Asisten SI-PAKAINGE MONSA</string>
+    <string name="ai_empty_desc">Pilih peran asisten di atas dan mulai percakapan multi-tahap. Riwayat percakapan tersimpan otomatis agar konteks tetap terjaga.</string>
+    <string name="ai_sender_user">Anda</string>
+    <string name="ai_copy_reply_cd">Salin jawaban asisten</string>
+    <string name="ai_streaming_label">Mengetik jawaban…</string>
+    <string name="ai_retry">Coba Lagi</string>
+    <string name="ai_dismiss">Tutup</string>
+    <string name="ai_clear_dialog_title">Hapus Riwayat Percakapan?</string>
+    <string name="ai_clear_dialog_desc">Seluruh riwayat chat Gemini pada akun Anda akan dihapus permanen dan percakapan dimulai dari awal.</string>
+    <string name="ai_clear_dialog_confirm">Hapus</string>
+    <string name="ai_clear_dialog_cancel">Batal</string>
+    <string name="voice_title">Percakapan Suara Real-Time</string>
+    <string name="voice_subtitle">Berbicara langsung dengan Asisten SI-PAKAINGE MONSA menggunakan Gemini Live API.</string>
+    <string name="voice_start">Mulai Bicara</string>
+    <string name="voice_stop">Akhiri Sesi</string>
+    <string name="voice_status_idle">Siap mendengarkan pertanyaan Anda</string>
+    <string name="voice_status_connecting">Menghubungkan ke Gemini Live API…</string>
+    <string name="voice_status_active">Sesi suara aktif — silakan berbicara sekarang</string>
+    <string name="voice_mic_denied">Izin mikrofon diperlukan untuk percakapan suara real-time.</string>
+
+    <!-- School Maps & Maps Grounding -->
+    <string name="maps_title">Peta &amp; Lokasi Sekolah</string>
+    <string name="maps_subtitle">Peta interaktif Google Maps &amp; pencarian lokasi sekitar</string>
+    <string name="maps_school_name">UPTD SPF SDN Unggulan Mongisidi 1</string>
+    <string name="maps_school_address">Jl. R.W. Monginsidi No. 13, Maricaya Baru, Kec. Makassar, Kota Makassar 90142</string>
+    <string name="maps_open_google_maps">Buka di Google Maps</string>
+    <string name="maps_directions">Rute ke Sekolah</string>
+    <string name="maps_query_placeholder">Cari fasilitas sekitar (puskesmas, halte, dinas, rute)…</string>
+    <string name="maps_search_button">Cari dengan Maps Grounding</string>
+    <string name="maps_sources_title">Sumber Google Maps</string>
+    <string name="maps_layer_normal">Standar</string>
+    <string name="maps_layer_satellite">Satelit</string>
+    <string name="maps_layer_hybrid">Hibrida</string>
+    <string name="maps_expand_cd">Perbesar atau perkecil tampilan peta</string>
+    <string name="maps_zoom_in_cd">Perbesar peta</string>
+    <string name="maps_zoom_out_cd">Perkecil peta</string>
+    <string name="maps_recenter_cd">Pusatkan peta ke lokasi sekolah</string>
+    <string name="maps_loading_map">Memuat peta Google Maps…</string>
+    <string name="maps_offline_fallback">Peta membutuhkan koneksi internet. Gunakan tombol Buka di Google Maps atau Rute ke Sekolah di bawah.</string>
+    <string name="maps_sdk_key_hint">Mode peta interaktif siap dipakai. Tambahkan MAPS_API_KEY di panel Secrets AI Studio untuk mengaktifkan Google Maps SDK native dengan penanda 3D &amp; Zona Selamat Sekolah.</string>
+
+    <!-- In-App & Email Status Notifications -->
+    <string name="notif_bell_cd">Buka pusat notifikasi status pengaduan</string>
+    <string name="notif_sheet_title">Notifikasi Status Pengaduan</string>
+    <string name="notif_sheet_subtitle">Pembaruan real-time setiap kali status laporan berubah di Cloud Firestore</string>
+    <string name="notif_mark_all_read">Tandai Dibaca</string>
+    <string name="notif_clear_all">Hapus Semua</string>
+    <string name="notif_empty_title">Belum ada notifikasi status</string>
+    <string name="notif_empty_desc">Anda akan langsung menerima pemberitahuan in-app dan opsi salinan email setiap kali status pengaduan Anda berubah di Firestore.</string>
+    <string name="notif_view_history">Lihat Riwayat</string>
+    <string name="notif_send_email">Kirim Email</string>
+    <string name="notif_unread_badge">Baru</string>
+</resources>

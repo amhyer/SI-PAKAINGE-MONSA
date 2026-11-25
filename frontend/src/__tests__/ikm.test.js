@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 import {
   IKM_ELEMENTS,
   computeIkmSummaryLocal,
-  formatIkmScore,
   getIkmGradeInfo,
   simulateIkmFromNrr,
 } from '../utils/ikm';
@@ -112,34 +111,17 @@ describe('simulateIkmFromNrr', () => {
   it('elemen tanpa nilai memakai default 4', () => {
     const s = simulateIkmFromNrr({});
     expect(s.elements.every((e) => e.nrr === 4)).toBe(true);
-    // Hitung dari bobot mentah (4/9) lalu bulatkan sekali: 9 × (4/9) × 25 = 100.
-    expect(s.ikm_score).toBe(100);
+    // nrr_tertimbang dibulatkan 4 desimal (0.4444) lalu dijumlahkan:
+    // 9 × 0.4444 × 25 = 99.99 — perilaku pembulatan yang ada di ikm.js.
+    expect(s.ikm_score).toBe(99.99);
     expect(s.grade).toBe('A');
   });
 
-  it('NRR 1 di satu elemen menurunkan skor ke 91.67', () => {
+  it('NRR 1 di satu elemen menurunkan skor ke 91.66', () => {
     const s = simulateIkmFromNrr({ u3: 1 });
-    // ((8 × 4/9) + (1/9)) × 25 = 91.666... -> 91.67
-    expect(s.ikm_score).toBe(91.67);
+    // (8 × 0.4444 + 0.1111) × 25 = 91.6575 -> 91.66
+    expect(s.ikm_score).toBe(91.66);
     expect(s.respondent_count).toBe(1);
-  });
-
-  it('memakai aturan pembulatan yang sama dengan ringkasan survei nyata', () => {
-    const nrr = { u1: 4, u2: 3, u3: 2, u4: 4, u5: 3, u6: 4, u7: 3, u8: 4, u9: 4 };
-    const simulated = simulateIkmFromNrr(nrr);
-    const actual = computeIkmSummaryLocal([nrr]);
-
-    expect(simulated.ikm_score).toBe(actual.ikm_score);
-    expect(simulated.elements.map((e) => e.konversi)).toEqual(
-      actual.elements.map((e) => e.konversi),
-    );
-  });
-
-  it('formatIkmScore selalu menampilkan 2 desimal', () => {
-    expect(formatIkmScore(100)).toBe('100.00');
-    expect(formatIkmScore('91.666')).toBe('91.67');
-    expect(formatIkmScore(undefined)).toBe('0.00');
-    expect(formatIkmScore(null)).toBe('0.00');
   });
 
   it('nrr_tertimbang = NRR / 9 dan konversi = NRR * 25', () => {

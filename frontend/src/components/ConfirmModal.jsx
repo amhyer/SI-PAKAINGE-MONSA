@@ -1,5 +1,4 @@
 import { AlertTriangle, CheckCircle2, HelpCircle, X } from 'lucide-react';
-import ModalShell from './ModalShell';
 
 export function ConfirmModal({
   open,
@@ -29,18 +28,17 @@ export function ConfirmModal({
       : 'bg-[#0B2D52] hover:bg-[#092341] text-white';
 
   return (
-    <ModalShell
-      onClose={onCancel}
-      titleId="confirm-modal-title"
-      backdropClassName="bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4"
-      panelClassName="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-5 space-y-4"
-    >
+    <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4" onClick={onCancel}>
+      <div
+        className="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 p-5 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-start gap-3">
           <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${badgeStyle}`}>
             {tone === 'danger' ? <AlertTriangle className="w-5 h-5" /> : <HelpCircle className="w-5 h-5" />}
           </div>
           <div className="min-w-0 flex-1">
-            <h3 id="confirm-modal-title" className="text-sm font-extrabold text-slate-900">{title}</h3>
+            <h3 className="text-sm font-extrabold text-slate-900">{title}</h3>
             <p className="text-xs text-slate-600 mt-1 leading-relaxed whitespace-pre-line">{message}</p>
           </div>
           <button
@@ -71,7 +69,8 @@ export function ConfirmModal({
             {loading ? 'Memproses...' : confirmLabel}
           </button>
         </div>
-    </ModalShell>
+      </div>
+    </div>
   );
 }
 

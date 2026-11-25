@@ -19,13 +19,6 @@ export const IKM_SCALE_OPTIONS = [
   { value: 1, short: '1 · Tidak Baik', color: 'bg-rose-700 text-white border-rose-700' },
 ];
 
-// Aturan baku IKM: hitung dari nilai mentah, bulatkan satu kali di akhir.
-// Semua tampilan skor memakai 2 desimal agar konsisten dengan poster & PDF.
-export function formatIkmScore(score) {
-  const value = Number(score);
-  return Number.isFinite(value) ? value.toFixed(2) : '0.00';
-}
-
 export function getIkmGradeInfo(score, count) {
   if (!count) {
     return {
@@ -118,20 +111,17 @@ export function computeIkmSummaryLocal(rows = []) {
 }
 
 export function simulateIkmFromNrr(nrrMap) {
-  let totalWeighted = 0;
   const elements = IKM_ELEMENTS.map((el) => {
     const val = Math.max(1, Math.min(4, Number(nrrMap?.[el.key] || 4)));
-    const weighted = val / 9;
-    totalWeighted += weighted;
     return {
       key: el.key,
       label: `${el.code} - ${el.label}`,
-      nrr: Number(val.toFixed(3)),
-      nrr_tertimbang: Number(weighted.toFixed(4)),
+      nrr: Number(val.toFixed(2)),
+      nrr_tertimbang: Number((val / 9).toFixed(4)),
       konversi: Number((val * 25).toFixed(2)),
     };
   });
-  // Sama seperti computeIkmSummaryLocal: jumlahkan bobot mentah, bulatkan sekali.
+  const totalWeighted = elements.reduce((acc, e) => acc + e.nrr_tertimbang, 0);
   const ikmScore = Number((totalWeighted * 25).toFixed(2));
   const { grade, predicate } = getIkmGradeInfo(ikmScore, 1);
   return {

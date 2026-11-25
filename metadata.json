@@ -1,0 +1,6 @@
+{
+  "name": "SI-PAKAINGE MONSA",
+  "description": "Aplikasi layanan pengaduan masyarakat inklusif UPTD SPF SD Negeri Unggulan Mongisidi 1 Makassar dengan Cloud Firestore, notifikasi status real-time, aksesibilitas global, Asisten AI Gemini, dan Peta Sekolah.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

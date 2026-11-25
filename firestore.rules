@@ -1,0 +1,194 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidTimestamp(ts) {
+      return ts is timestamp && ts <= request.time;
+    }
+
+    function isValidUserProfile(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100 &&
+             (!('email' in data) || data.email == null || (data.email is string && data.email.size() <= 150)) &&
+             data.roleLabel is string && data.roleLabel.size() >= 1 && data.roleLabel.size() <= 60 &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidCloudComplaint(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.ticketCode is string && data.ticketCode.size() >= 3 && data.ticketCode.size() <= 40 &&
+             data.category is string && data.category.size() >= 1 && data.category.size() <= 100 &&
+             data.urgency is string && data.urgency in ['Biasa', 'Penting', 'Darurat Anak'] &&
+             data.locationDetail is string && data.locationDetail.size() >= 1 && data.locationDetail.size() <= 160 &&
+             data.description is string && data.description.size() >= 5 && data.description.size() <= 2000 &&
+             data.status is string && data.status in ['Diterima', 'Diverifikasi Piket/TPPK', 'Ditangani TPPK/Kepsek', 'Selesai'] &&
+             data.anonymousReport is bool &&
+             (!('reporterName' in data) || data.reporterName == null || (!data.anonymousReport && data.reporterName is string && data.reporterName.size() <= 100)) &&
+             (!('studentInfo' in data) || data.studentInfo == null || (data.studentInfo is string && data.studentInfo.size() <= 100)) &&
+             data.priorityRentan is bool &&
+             (!('vulnerableGroup' in data) || data.vulnerableGroup == null || (data.vulnerableGroup is string && data.vulnerableGroup.size() <= 120)) &&
+             (!('disabilityType' in data) || data.disabilityType == null || (data.disabilityType is string && data.disabilityType.size() <= 80)) &&
+             (!('specialNeedNote' in data) || data.specialNeedNote == null || (data.specialNeedNote is string && data.specialNeedNote.size() <= 300)) &&
+             (!('routedTo' in data) || data.routedTo == null || (data.routedTo is string && data.routedTo.size() <= 100)) &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidGeminiChatMessage(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.sender is string && data.sender in ['user', 'model'] &&
+             data.text is string && data.text.size() >= 1 && data.text.size() <= 8000 &&
+             data.modelUsed is string && data.modelUsed.size() >= 1 && data.modelUsed.size() <= 80 &&
+             (!('groundingSource' in data) || data.groundingSource == null || (data.groundingSource is string && data.groundingSource.size() <= 500)) &&
+             isValidTimestamp(data.createdAt);
+    }
+
+    function isValidStatusNotification(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.complaintId is string && isValidId(data.complaintId) &&
+             data.ticketCode is string && data.ticketCode.size() >= 3 && data.ticketCode.size() <= 40 &&
+             data.category is string && data.category.size() >= 1 && data.category.size() <= 100 &&
+             data.previousStatus is string && data.previousStatus.size() >= 1 && data.previousStatus.size() <= 60 &&
+             data.newStatus is string && data.newStatus in ['Diterima', 'Diverifikasi Piket/TPPK', 'Ditangani TPPK/Kepsek', 'Selesai'] &&
+             data.title is string && data.title.size() >= 1 && data.title.size() <= 120 &&
+             data.message is string && data.message.size() >= 1 && data.message.size() <= 400 &&
+             data.read is bool &&
+             isValidTimestamp(data.createdAt) &&
+             (!('readAt' in data) || data.readAt == null || isValidTimestamp(data.readAt));
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       incoming().keys().hasAll(['userId', 'displayName', 'roleLabel', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['userId', 'displayName', 'email', 'roleLabel', 'createdAt', 'updatedAt']) &&
+                       isValidUserProfile(incoming());
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUserProfile(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'email', 'roleLabel', 'updatedAt']);
+
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      match /complaints/{complaintId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(complaintId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(complaintId) &&
+                         incoming().keys().hasAll([
+                           'userId', 'ticketCode', 'category', 'urgency',
+                           'locationDetail', 'description', 'status',
+                           'anonymousReport', 'priorityRentan', 'createdAt', 'updatedAt'
+                         ]) &&
+                         incoming().keys().hasOnly([
+                           'userId', 'ticketCode', 'category', 'urgency',
+                           'locationDetail', 'description', 'status',
+                           'anonymousReport', 'reporterName', 'studentInfo',
+                           'priorityRentan', 'vulnerableGroup', 'disabilityType',
+                           'specialNeedNote', 'routedTo', 'createdAt', 'updatedAt'
+                         ]) &&
+                         incoming().status == 'Diterima' &&
+                         isValidCloudComplaint(incoming());
+
+        allow update: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(complaintId) &&
+                         isValidCloudComplaint(incoming()) &&
+                         incoming().userId == existing().userId &&
+                         incoming().ticketCode == existing().ticketCode &&
+                         incoming().createdAt == existing().createdAt &&
+                         existing().status != 'Selesai' &&
+                         (
+                           incoming().diff(existing()).affectedKeys().hasOnly(['description', 'locationDetail', 'urgency', 'updatedAt']) ||
+                           incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])
+                         );
+
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(complaintId);
+      }
+
+      match /chatMessages/{messageId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(messageId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(messageId) &&
+                         incoming().keys().hasAll(['userId', 'sender', 'text', 'modelUsed', 'createdAt']) &&
+                         incoming().keys().hasOnly(['userId', 'sender', 'text', 'modelUsed', 'groundingSource', 'createdAt']) &&
+                         isValidGeminiChatMessage(incoming());
+
+        allow update: if false;
+
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(messageId);
+      }
+
+      match /notifications/{notificationId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(notificationId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(notificationId) &&
+                         incoming().keys().hasAll([
+                           'userId', 'complaintId', 'ticketCode', 'category',
+                           'previousStatus', 'newStatus', 'title', 'message',
+                           'read', 'createdAt'
+                         ]) &&
+                         incoming().keys().hasOnly([
+                           'userId', 'complaintId', 'ticketCode', 'category',
+                           'previousStatus', 'newStatus', 'title', 'message',
+                           'read', 'createdAt', 'readAt'
+                         ]) &&
+                         incoming().read == false &&
+                         isValidStatusNotification(incoming());
+
+        allow update: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(notificationId) &&
+                         isValidStatusNotification(incoming()) &&
+                         incoming().userId == existing().userId &&
+                         incoming().complaintId == existing().complaintId &&
+                         incoming().ticketCode == existing().ticketCode &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().read == true &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['read', 'readAt']);
+
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(notificationId);
+      }
+    }
+  }
+}

@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { FileSpreadsheet, FileText, Copy, X, Check, Printer } from 'lucide-react';
 import { apiFetch, buildApiUrl, getTenantCode, getToken } from '../api';
 import { downloadEvaluationPdf } from '../utils/pdfReport';
-import { formatIkmScore } from '../utils/ikm';
-import ModalShell from './ModalShell';
 
 export default function MonevReportModal({ open, onClose, school, onToast }) {
   const [loading, setLoading] = useState(false);
@@ -75,7 +73,7 @@ export default function MonevReportModal({ open, onClose, school, onToast }) {
         ['Rata-Rata Penilaian Aplikasi SI-PAKAINGE', report.recap.avg_app_rating || 0],
         ['Rata-Rata Penilaian Respon & Tindak Lanjut Sekolah', report.recap.avg_school_rating || 0],
         ['Jumlah Responden Evaluasi App & Sekolah', report.recap.eval_count || 0],
-        ['Skor IKM 9 Unsur (PermenPAN-RB 14/2017)', `${formatIkmScore(report.recap.ikm_score)} (Mutu ${report.recap.ikm_grade || '-'})`],
+        ['Skor IKM 9 Unsur (PermenPAN-RB 14/2017)', `${report.recap.ikm_score || 0} (Mutu ${report.recap.ikm_grade || '-'})`],
         ['Jumlah Responden IKM 9 Unsur', report.recap.ikm_count || 0],
       ];
       const safeCsvCell = (val) => {
@@ -149,19 +147,14 @@ export default function MonevReportModal({ open, onClose, school, onToast }) {
   }
 
   return (
-    <ModalShell
-      onClose={onClose}
-      titleId="monev-report-title"
-      closeOnBackdrop={false}
-      backdropClassName="bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3"
-      panelClassName="bg-white w-full max-w-2xl max-h-[88vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
-    >
+    <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-3">
+      <div className="bg-white w-full max-w-2xl max-h-[88vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden">
         <div className="bg-[#0B2D52] text-white px-5 py-4 flex items-center justify-between">
           <div>
-            <h3 id="monev-report-title" className="font-bold text-sm">Ekspor Laporan Monev & FKP_UPP (PEKPPP 05B & 06B)</h3>
+            <h3 className="font-bold text-sm">Ekspor Laporan Monev & FKP_UPP (PEKPPP 05B & 06B)</h3>
             <p className="text-[11px] text-cyan-200 mt-0.5">{school?.name || 'UPTD SPF SD Negeri Unggulan Mongisidi 1'}</p>
           </div>
-          <button type="button" onClick={onClose} className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center" aria-label="Tutup laporan monev">
+          <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -233,6 +226,7 @@ export default function MonevReportModal({ open, onClose, school, onToast }) {
             </>
           )}
         </div>
-    </ModalShell>
+      </div>
+    </div>
   );
 }

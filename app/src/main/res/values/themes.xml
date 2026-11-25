@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SiPakaingeMonsa" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/monsa_navy</item>
+        <item name="android:navigationBarColor">@color/monsa_navy</item>
+        <item name="android:windowBackground">@color/monsa_navy</item>
+    </style>
+</resources>

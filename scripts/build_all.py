@@ -76,9 +76,6 @@ def audit_jsx_and_fallback():
     buttons = 0
     unwired = []
     for p in (FRONTEND / "src").rglob("*.jsx"):
-        # Lewati fixture test: tombol tiruan di sana bukan UI aplikasi.
-        if "__tests__" in p.parts or p.name.endswith((".test.jsx", ".spec.jsx")):
-            continue
         txt = p.read_text(encoding="utf-8")
         for m in re.finditer(r"<button\b([^>]*)>", txt, re.S):
             buttons += 1

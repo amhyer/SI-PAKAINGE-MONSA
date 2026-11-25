@@ -25,7 +25,6 @@ import { computeComplaintSla, computeSlaSummary } from '../utils/sla';
 import MonevReportModal from './MonevReportModal';
 import { ConfirmModal } from './ConfirmModal';
 import EvaluationPanel from './EvaluationPanel';
-import ModalShell from './ModalShell';
 
 function compressResolutionPhoto(file) {
   return new Promise((resolve, reject) => {
@@ -385,22 +384,18 @@ export default function ComplaintTrackTab({
         {guestTicketCard}
 
         {zoomPhoto && (
-          <ModalShell
-            onClose={() => setZoomPhoto('')}
-            label="Pratinjau foto"
-            backdropClassName="bg-slate-950/80 flex items-center justify-center p-4"
-            panelClassName="relative max-w-xl w-full"
-          >
+          <div className="fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4" onClick={() => setZoomPhoto('')}>
+            <div className="relative max-w-xl w-full" onClick={(e) => e.stopPropagation()}>
               <button
                 type="button"
                 onClick={() => setZoomPhoto('')}
                 className="absolute -top-10 right-0 text-white bg-white/20 rounded-full p-1.5"
-                aria-label="Tutup pratinjau foto"
               >
                 <X className="w-5 h-5" />
               </button>
               <img src={zoomPhoto} alt="Pratinjau foto" className="w-full max-h-[80vh] object-contain rounded-2xl bg-black" />
-          </ModalShell>
+            </div>
+          </div>
         )}
       </div>
     );
@@ -1092,22 +1087,17 @@ export default function ComplaintTrackTab({
       )}
 
       {zoomPhoto && (
-        <ModalShell
-          onClose={() => setZoomPhoto('')}
-          label="Foto bukti pengaduan"
-          backdropClassName="bg-slate-950/80 flex items-center justify-center p-4"
-          panelClassName="relative max-w-xl w-full"
-        >
+        <div className="fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4" onClick={() => setZoomPhoto('')}>
+          <div className="relative max-w-xl w-full" onClick={(e) => e.stopPropagation()}>
             <button
-              type="button"
               onClick={() => setZoomPhoto('')}
               className="absolute -top-10 right-0 text-white bg-white/20 rounded-full p-1.5"
-              aria-label="Tutup foto bukti pengaduan"
             >
               <X className="w-5 h-5" />
             </button>
             <img src={zoomPhoto} alt="Foto bukti pengaduan" className="w-full max-h-[80vh] object-contain rounded-2xl bg-black" />
-        </ModalShell>
+          </div>
+        </div>
       )}
 
       <MonevReportModal open={monevOpen} onClose={() => setMonevOpen(false)} school={school} onToast={onToast} />

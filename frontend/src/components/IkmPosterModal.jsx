@@ -1,9 +1,8 @@
 import { Printer, FileDown, X, Award } from 'lucide-react';
 import { downloadIkmPosterPdf } from '../utils/pdfReport';
-import { formatIkmScore, getIkmGradeInfo } from '../utils/ikm';
+import { getIkmGradeInfo } from '../utils/ikm';
 import { localDateYmd } from '../utils/sla';
 import logoMonsa from '../assets/logo-monsa.png';
-import ModalShell from './ModalShell';
 
 export default function IkmPosterModal({ open, onClose, school, ikmSummary, onToast }) {
   if (!open) return null;
@@ -35,15 +34,14 @@ export default function IkmPosterModal({ open, onClose, school, ikmSummary, onTo
   }
 
   return (
-    <ModalShell
-      onClose={onClose}
-      titleId="ikm-poster-title"
-      backdropClassName="bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4"
-      panelClassName="bg-white w-full max-w-3xl max-h-[92vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
-    >
+    <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4" onClick={onClose}>
+      <div
+        className="bg-white w-full max-w-3xl max-h-[92vh] rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="bg-[#0B2D52] text-white px-4 py-3 flex items-center justify-between gap-2 flex-wrap">
           <div>
-            <h3 id="ikm-poster-title" className="text-sm font-bold">Pratinjau Poster Publikasi IKM Sekolah (PermenPAN-RB 14/2017)</h3>
+            <h3 className="text-sm font-bold">Pratinjau Poster Publikasi IKM Sekolah (PermenPAN-RB 14/2017)</h3>
             <p className="text-[11px] text-cyan-200">Siap Cetak A4 untuk Papan Pelayanan Sekolah & Bukti PEKPPP</p>
           </div>
           <div className="flex items-center gap-2">
@@ -99,7 +97,7 @@ export default function IkmPosterModal({ open, onClose, school, ikmSummary, onTo
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-2xl border-2 border-[#0B2D52] bg-cyan-50/50 p-4 text-center">
                 <p className="text-[10px] font-bold uppercase text-slate-600">Nilai IKM (Skala 25–100)</p>
-                <p className="text-3xl font-extrabold text-[#0B2D52] mt-1">{cnt ? formatIkmScore(score) : '0.00'}</p>
+                <p className="text-3xl font-extrabold text-[#0B2D52] mt-1">{cnt ? score.toFixed(2) : '0.00'}</p>
                 <p className="text-[11px] text-slate-600 mt-1">Total Responden: <strong>{cnt} orang</strong></p>
               </div>
               <div className={`rounded-2xl border-2 p-4 text-center flex flex-col justify-center ${gradeInfo.badgeClass}`}>
@@ -133,8 +131,8 @@ export default function IkmPosterModal({ open, onClose, school, ikmSummary, onTo
                       <tr key={el.key} className={i % 2 === 0 ? 'bg-white border-b border-slate-200' : 'bg-slate-50 border-b border-slate-200'}>
                         <td className="px-2.5 py-1.5">{i + 1}</td>
                         <td className="px-2.5 py-1.5 font-semibold text-slate-800">{el.label}</td>
-                        <td className="px-2.5 py-1.5 text-center font-bold text-[#0B2D52]">{cnt ? formatIkmScore(el.nrr) : '-'}</td>
-                        <td className="px-2.5 py-1.5 text-center font-bold text-emerald-800">{cnt ? formatIkmScore(el.konversi) : '-'}</td>
+                        <td className="px-2.5 py-1.5 text-center font-bold text-[#0B2D52]">{cnt ? el.nrr.toFixed(2) : '-'}</td>
+                        <td className="px-2.5 py-1.5 text-center font-bold text-emerald-800">{cnt ? el.konversi.toFixed(2) : '-'}</td>
                         <td className="px-2.5 py-1.5">{cnt ? `${g.predicate} (${g.grade})` : '-'}</td>
                       </tr>
                     );
@@ -158,6 +156,7 @@ export default function IkmPosterModal({ open, onClose, school, ikmSummary, onTo
             </div>
           </div>
         </div>
-    </ModalShell>
+      </div>
+    </div>
   );
 }

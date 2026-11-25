@@ -23,6 +23,7 @@ uploads/
 
 # --- Artefak build / editor ---
 *.log
+*-debug.log
 .DS_Store
 .vscode/
 .idea/
