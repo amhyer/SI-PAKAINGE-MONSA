@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FileSpreadsheet, FileText, Copy, X, Check, Printer } from 'lucide-react';
 import { apiFetch, buildApiUrl, getTenantCode, getToken } from '../api';
 import { downloadEvaluationPdf } from '../utils/pdfReport';
+import { formatIkmScore } from '../utils/ikm';
 import ModalShell from './ModalShell';
 
 export default function MonevReportModal({ open, onClose, school, onToast }) {
@@ -74,7 +75,7 @@ export default function MonevReportModal({ open, onClose, school, onToast }) {
         ['Rata-Rata Penilaian Aplikasi SI-PAKAINGE', report.recap.avg_app_rating || 0],
         ['Rata-Rata Penilaian Respon & Tindak Lanjut Sekolah', report.recap.avg_school_rating || 0],
         ['Jumlah Responden Evaluasi App & Sekolah', report.recap.eval_count || 0],
-        ['Skor IKM 9 Unsur (PermenPAN-RB 14/2017)', `${report.recap.ikm_score || 0} (Mutu ${report.recap.ikm_grade || '-'})`],
+        ['Skor IKM 9 Unsur (PermenPAN-RB 14/2017)', `${formatIkmScore(report.recap.ikm_score)} (Mutu ${report.recap.ikm_grade || '-'})`],
         ['Jumlah Responden IKM 9 Unsur', report.recap.ikm_count || 0],
       ];
       const safeCsvCell = (val) => {

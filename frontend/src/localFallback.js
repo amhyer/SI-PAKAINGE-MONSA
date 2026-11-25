@@ -1,5 +1,5 @@
 import { computeComplaintSla, computeSlaSummary, localDateYmd } from './utils/sla.js';
-import { computeIkmSummaryLocal } from './utils/ikm.js';
+import { computeIkmSummaryLocal, formatIkmScore } from './utils/ikm.js';
 import { CLIENT_APP_INFO } from './constants.js';
 
 function nowIso(offsetHours = 0) {
@@ -443,7 +443,7 @@ function buildMonevMarkdown(school, recap, list) {
     `| Rata-Rata Kepuasan Tiket Pengaduan | ${recap.avg_rating} / 5.0 (${recap.rated_count} responden) |`,
     `| Rata-Rata Penilaian Aplikasi SI-PAKAINGE | ${recap.avg_app_rating || 0} / 5.0 (${recap.eval_count || 0} responden) |`,
     `| Rata-Rata Penilaian Respon & Tindak Lanjut Sekolah | ${recap.avg_school_rating || 0} / 5.0 (${recap.eval_count || 0} responden) |`,
-    `| Indeks Kepuasan Masyarakat (IKM 9 Unsur PermenPAN-RB 14/2017) | ${recap.ikm_score || 0} / 100 (Mutu ${recap.ikm_grade || '-'} - ${recap.ikm_predicate || '-'}, ${recap.ikm_count || 0} responden) |`,
+    `| Indeks Kepuasan Masyarakat (IKM 9 Unsur PermenPAN-RB 14/2017) | ${formatIkmScore(recap.ikm_score)} / 100 (Mutu ${recap.ikm_grade || '-'} - ${recap.ikm_predicate || '-'}, ${recap.ikm_count || 0} responden) |`,
     '',
     '## 2. DAFTAR TINDAK LANJUT PENGADUAN',
     '| Kode Tiket | Tanggal | Kategori | Prioritas Rentan | Unit Penangan | Status | Catatan Tindak Lanjut |',

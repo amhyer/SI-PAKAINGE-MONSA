@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Award, Send, CheckCircle2 } from 'lucide-react';
 import { apiFetch } from '../api';
-import { IKM_ELEMENTS, IKM_SCALE_OPTIONS, getIkmGradeInfo } from '../utils/ikm';
+import { IKM_ELEMENTS, IKM_SCALE_OPTIONS, formatIkmScore, getIkmGradeInfo } from '../utils/ikm';
 import { ConfirmModal } from './ConfirmModal';
 
 export default function IkmSurveyCard({ user, school, onToast, onSubmitted }) {
@@ -58,7 +58,7 @@ export default function IkmSurveyCard({ user, school, onToast, onSubmitted }) {
               <Award className="w-4 h-4" /> Indeks Kepuasan Masyarakat (IKM 9 Unsur)
             </p>
             <p className="text-xl font-extrabold text-[#0B2D52] mt-0.5">
-              {summary.respondent_count ? `${Number(summary.ikm_score).toFixed(2)} / 100` : 'Belum Ada Data'}
+              {summary.respondent_count ? `${formatIkmScore(summary.ikm_score)} / 100` : 'Belum Ada Data'}
             </p>
             <p className="text-[10px] text-slate-500">
               {summary.respondent_count} responden · PermenPAN-RB No. 14/2017
@@ -173,7 +173,7 @@ export default function IkmSurveyCard({ user, school, onToast, onSubmitted }) {
                   <p className="font-bold text-slate-800">{it.respondent_name}</p>
                   {it.suggestion && <p className="text-slate-600 mt-0.5">"{it.suggestion}"</p>}
                 </div>
-                <span className="font-extrabold text-[#0B2D52] shrink-0">{avgU.toFixed(1)} / 100</span>
+                <span className="font-extrabold text-[#0B2D52] shrink-0">{formatIkmScore(avgU)} / 100</span>
               </div>
             );
           })}

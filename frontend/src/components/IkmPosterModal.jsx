@@ -1,6 +1,6 @@
 import { Printer, FileDown, X, Award } from 'lucide-react';
 import { downloadIkmPosterPdf } from '../utils/pdfReport';
-import { getIkmGradeInfo } from '../utils/ikm';
+import { formatIkmScore, getIkmGradeInfo } from '../utils/ikm';
 import { localDateYmd } from '../utils/sla';
 import logoMonsa from '../assets/logo-monsa.png';
 import ModalShell from './ModalShell';
@@ -99,7 +99,7 @@ export default function IkmPosterModal({ open, onClose, school, ikmSummary, onTo
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-2xl border-2 border-[#0B2D52] bg-cyan-50/50 p-4 text-center">
                 <p className="text-[10px] font-bold uppercase text-slate-600">Nilai IKM (Skala 25–100)</p>
-                <p className="text-3xl font-extrabold text-[#0B2D52] mt-1">{cnt ? score.toFixed(2) : '0.00'}</p>
+                <p className="text-3xl font-extrabold text-[#0B2D52] mt-1">{cnt ? formatIkmScore(score) : '0.00'}</p>
                 <p className="text-[11px] text-slate-600 mt-1">Total Responden: <strong>{cnt} orang</strong></p>
               </div>
               <div className={`rounded-2xl border-2 p-4 text-center flex flex-col justify-center ${gradeInfo.badgeClass}`}>
@@ -133,8 +133,8 @@ export default function IkmPosterModal({ open, onClose, school, ikmSummary, onTo
                       <tr key={el.key} className={i % 2 === 0 ? 'bg-white border-b border-slate-200' : 'bg-slate-50 border-b border-slate-200'}>
                         <td className="px-2.5 py-1.5">{i + 1}</td>
                         <td className="px-2.5 py-1.5 font-semibold text-slate-800">{el.label}</td>
-                        <td className="px-2.5 py-1.5 text-center font-bold text-[#0B2D52]">{cnt ? el.nrr.toFixed(2) : '-'}</td>
-                        <td className="px-2.5 py-1.5 text-center font-bold text-emerald-800">{cnt ? el.konversi.toFixed(2) : '-'}</td>
+                        <td className="px-2.5 py-1.5 text-center font-bold text-[#0B2D52]">{cnt ? formatIkmScore(el.nrr) : '-'}</td>
+                        <td className="px-2.5 py-1.5 text-center font-bold text-emerald-800">{cnt ? formatIkmScore(el.konversi) : '-'}</td>
                         <td className="px-2.5 py-1.5">{cnt ? `${g.predicate} (${g.grade})` : '-'}</td>
                       </tr>
                     );

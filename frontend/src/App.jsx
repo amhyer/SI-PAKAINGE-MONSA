@@ -51,6 +51,7 @@ import ModalShell from './components/ModalShell';
 import ChatbotDrawer from './components/ChatbotDrawer';
 import { ToastBanner } from './components/ConfirmModal';
 import { tLabel } from './utils/i18n';
+import { formatIkmScore } from './utils/ikm';
 import logoMonsa from './assets/logo-monsa.png';
 
 export default function App() {
@@ -687,7 +688,7 @@ export default function App() {
                     {' · '}
                     Respon Sekolah: <strong>{publicRecap?.avg_school_rating ? `${publicRecap.avg_school_rating}/5` : '-'}</strong>
                     {' · '}
-                    IKM: <strong>{publicRecap?.ikm_count ? `${publicRecap.ikm_score} (${publicRecap.ikm_grade})` : '-'}</strong>
+                    IKM: <strong>{publicRecap?.ikm_count ? `${formatIkmScore(publicRecap.ikm_score)} (${publicRecap.ikm_grade})` : '-'}</strong>
                     {' · '}
                     Tiket: <strong>{publicRecap?.avg_rating ? `${publicRecap.avg_rating}/5` : '-'}</strong>
                   </span>
