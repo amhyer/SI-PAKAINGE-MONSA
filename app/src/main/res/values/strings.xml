@@ -158,7 +158,7 @@
     <string name="maps_recenter_cd">Pusatkan peta ke lokasi sekolah</string>
     <string name="maps_loading_map">Memuat peta Google Maps…</string>
     <string name="maps_offline_fallback">Peta membutuhkan koneksi internet. Gunakan tombol Buka di Google Maps atau Rute ke Sekolah di bawah.</string>
-    <string name="maps_sdk_key_hint">Mode peta interaktif siap dipakai. Tambahkan MAPS_API_KEY di panel Secrets AI Studio untuk mengaktifkan Google Maps SDK native dengan penanda 3D &amp; Zona Selamat Sekolah.</string>
+    <string name="maps_sdk_key_hint">Ketuk titik lokasi di atas untuk berpindah ke Kampus Utama, Gerbang Inklusif, atau Koridor Jl. R.W. Monginsidi.</string>
 
     <!-- In-App & Email Status Notifications -->
     <string name="notif_bell_cd">Buka pusat notifikasi status pengaduan</string>

@@ -245,7 +245,7 @@ fun MonsaWebScreen(
                         mediaPlaybackRequiresUserGesture = false
                         allowFileAccess = false
                         allowContentAccess = true
-                        mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+                        mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
                         setSupportZoom(true)
                         builtInZoomControls = true
                         displayZoomControls = false
@@ -283,11 +283,14 @@ fun MonsaWebScreen(
                             if (uri.host == MonsaWebAssets.APP_HOST) {
                                 return false
                             }
-                            runCatching {
-                                val intent = Intent(Intent.ACTION_VIEW, uri).apply {
-                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            val scheme = uri.scheme?.lowercase()
+                            if (scheme in setOf("https", "http", "mailto", "tel", "geo")) {
+                                runCatching {
+                                    val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    }
+                                    ctx.startActivity(intent)
                                 }
-                                ctx.startActivity(intent)
                             }
                             return true
                         }
@@ -362,6 +365,10 @@ fun MonsaWebScreen(
                         }
 
                         override fun onPermissionRequest(request: PermissionRequest) {
+                            if (request.origin?.host != MonsaWebAssets.APP_HOST) {
+                                request.deny()
+                                return
+                            }
                             val neededPermissions = mutableListOf<String>()
                             val alreadyGrantedResources = mutableListOf<String>()
 

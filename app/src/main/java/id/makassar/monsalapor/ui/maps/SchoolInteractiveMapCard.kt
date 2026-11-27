@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.animation.animateContentSize
@@ -44,6 +45,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -485,6 +487,13 @@ private fun EmbeddedGoogleMapViewport(
         view.loadUrl(embedUrl)
     }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            webViewRef?.destroy()
+            webViewRef = null
+        }
+    }
+
     Box(modifier = modifier.testTag("embedded_google_map")) {
         AndroidView(
             modifier = Modifier.fillMaxSize(),
@@ -496,6 +505,8 @@ private fun EmbeddedGoogleMapViewport(
                     )
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
+                    settings.allowFileAccess = false
+                    settings.mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
                     settings.setSupportZoom(true)
                     settings.builtInZoomControls = false
 
